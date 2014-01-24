@@ -207,18 +207,113 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
   public function testUpperBoard_shouldReturnSumOfAllUpperBoardValues_withNoBonus_whenTotalLessThan63() {
     $y = new YahtzeeBoard();
     
-    $y->scoreOnes(dice(1), dice(6), dice(6), dice(6), dice(6));
-    $y->scoreTwos(dice(2), dice(6), dice(6), dice(6), dice(6));
-    $y->scoreThrees(dice(3), dice(6), dice(6), dice(6), dice(6));
-    $y->scoreFours(dice(4), dice(6), dice(6), dice(6), dice(6));
-    $y->scoreFives(dice(5), dice(6), dice(6), dice(6), dice(6));
-    $y->scoreSixes(dice(6), dice(1), dice(1), dice(1), dice(1));
+    $y->scoreOnes(dice(1), dice(1), dice(6), dice(6), dice(6));
+    $y->scoreTwos(dice(2), dice(2), dice(2), dice(6), dice(6));
+    $y->scoreThrees(dice(3), dice(3), dice(3), dice(6), dice(6));
+    $y->scoreFours(dice(4), dice(4), dice(4), dice(6), dice(6));
+    $y->scoreFives(dice(5), dice(5), dice(5), dice(6), dice(6));
+    $y->scoreSixes(dice(6), dice(6), dice(6), dice(1), dice(1));
     
-    $this->assertEquals(21, $y->totalScore());
-    $this->assertEquals(21, $y->upperScore());
+    $this->assertEquals(62, $y->totalScore());
+    $this->assertEquals(62, $y->upperScore());
     $this->assertEquals(0, $y->bonus());
   }
   
+  public function testUpperBoard_shouldIncludeBonus_whenTotalEqualTo63() {
+    $y = new YahtzeeBoard();
+    
+    $y->scoreOnes(dice(1), dice(1), dice(1), dice(6), dice(6));
+    $y->scoreTwos(dice(2), dice(2), dice(2), dice(6), dice(6));
+    $y->scoreThrees(dice(3), dice(3), dice(3), dice(6), dice(6));
+    $y->scoreFours(dice(4), dice(4), dice(4), dice(6), dice(6));
+    $y->scoreFives(dice(5), dice(5), dice(5), dice(6), dice(6));
+    $y->scoreSixes(dice(6), dice(6), dice(6), dice(1), dice(1));
+    
+    $this->assertEquals(98, $y->totalScore());
+    $this->assertEquals(63, $y->upperScore());
+    $this->assertEquals(35, $y->bonus());
+  }
+
+  public function testUpperBoard_shouldIncludeBonus_whenTotalGreaterThan63() {
+    $y = new YahtzeeBoard();
+    
+    $y->scoreOnes(dice(1), dice(1), dice(1), dice(1), dice(6));
+    $y->scoreTwos(dice(2), dice(2), dice(2), dice(6), dice(6));
+    $y->scoreThrees(dice(3), dice(3), dice(3), dice(6), dice(6));
+    $y->scoreFours(dice(4), dice(4), dice(4), dice(6), dice(6));
+    $y->scoreFives(dice(5), dice(5), dice(5), dice(6), dice(6));
+    $y->scoreSixes(dice(6), dice(6), dice(6), dice(1), dice(1));
+    
+    $this->assertEquals(99, $y->totalScore());
+    $this->assertEquals(64, $y->upperScore());
+    $this->assertEquals(35, $y->bonus());
+  }
+
+  /* Three of a Kind */
+
+  public function testThreeOfAKind_shouldBeZero_whenLessThanThreeOfAnyValue() {
+    $this->assertEquals(0, $this->boardWithThreeOfAKind(dice(1), dice(2), dice(3), dice(4), dice(5))->totalScore());
+    $this->assertEquals(0, $this->boardWithThreeOfAKind(dice(1), dice(1), dice(2), dice(6), dice(6))->totalScore());
+    $this->assertEquals(0, $this->boardWithThreeOfAKind(dice(2), dice(2), dice(1), dice(6), dice(6))->totalScore());
+    $this->assertEquals(0, $this->boardWithThreeOfAKind(dice(3), dice(3), dice(1), dice(6), dice(6))->totalScore());
+    $this->assertEquals(0, $this->boardWithThreeOfAKind(dice(4), dice(4), dice(1), dice(6), dice(6))->totalScore());
+    $this->assertEquals(0, $this->boardWithThreeOfAKind(dice(5), dice(5), dice(1), dice(6), dice(6))->totalScore());
+    $this->assertEquals(0, $this->boardWithThreeOfAKind(dice(6), dice(6), dice(2), dice(1), dice(1))->totalScore());
+  }
+
+  public function testThreeOfAKind_shouldTotalDice_whenThreeOfAnyValue() {
+    $this->assertEquals(15, $this->boardWithThreeOfAKind(dice(1), dice(1), dice(1), dice(6), dice(6))->totalScore());
+    $this->assertEquals(18, $this->boardWithThreeOfAKind(dice(2), dice(2), dice(2), dice(6), dice(6))->totalScore());
+    $this->assertEquals(21, $this->boardWithThreeOfAKind(dice(3), dice(3), dice(3), dice(6), dice(6))->totalScore());
+    $this->assertEquals(24, $this->boardWithThreeOfAKind(dice(4), dice(4), dice(4), dice(6), dice(6))->totalScore());
+    $this->assertEquals(27, $this->boardWithThreeOfAKind(dice(5), dice(5), dice(5), dice(6), dice(6))->totalScore());
+    $this->assertEquals(20, $this->boardWithThreeOfAKind(dice(6), dice(6), dice(6), dice(1), dice(1))->totalScore());
+  }
+
+  public function testThreeOfAKind_shouldTotalDice_whenFourOfAnyValue() {
+    $this->assertEquals(10, $this->boardWithThreeOfAKind(dice(1), dice(1), dice(1), dice(1), dice(6))->totalScore());
+    $this->assertEquals(14, $this->boardWithThreeOfAKind(dice(2), dice(2), dice(2), dice(2), dice(6))->totalScore());
+    $this->assertEquals(18, $this->boardWithThreeOfAKind(dice(3), dice(3), dice(3), dice(3), dice(6))->totalScore());
+    $this->assertEquals(22, $this->boardWithThreeOfAKind(dice(4), dice(4), dice(4), dice(4), dice(6))->totalScore());
+    $this->assertEquals(26, $this->boardWithThreeOfAKind(dice(5), dice(5), dice(5), dice(5), dice(6))->totalScore());
+    $this->assertEquals(25, $this->boardWithThreeOfAKind(dice(6), dice(6), dice(6), dice(6), dice(1))->totalScore());
+  }
+
+  public function testThreeOfAKind_shouldTotalDice_whenFiveOfAnyValue() {
+    $this->assertEquals(5, $this->boardWithThreeOfAKind(dice(1), dice(1), dice(1), dice(1), dice(1))->totalScore());
+    $this->assertEquals(10, $this->boardWithThreeOfAKind(dice(2), dice(2), dice(2), dice(2), dice(2))->totalScore());
+    $this->assertEquals(15, $this->boardWithThreeOfAKind(dice(3), dice(3), dice(3), dice(3), dice(3))->totalScore());
+    $this->assertEquals(20, $this->boardWithThreeOfAKind(dice(4), dice(4), dice(4), dice(4), dice(4))->totalScore());
+    $this->assertEquals(25, $this->boardWithThreeOfAKind(dice(5), dice(5), dice(5), dice(5), dice(5))->totalScore());
+    $this->assertEquals(30, $this->boardWithThreeOfAKind(dice(6), dice(6), dice(6), dice(6), dice(6))->totalScore());
+  }
+
+  public function testThreeOfAKind_orderOrGroupingDoesntMatter() {
+    $this->assertEquals(7, $this->boardWithThreeOfAKind(dice(1), dice(1), dice(1), dice(2), dice(2))->totalScore());
+    $this->assertEquals(7, $this->boardWithThreeOfAKind(dice(1), dice(1), dice(2), dice(1), dice(2))->totalScore());
+    $this->assertEquals(7, $this->boardWithThreeOfAKind(dice(1), dice(1), dice(2), dice(2), dice(1))->totalScore());
+    $this->assertEquals(7, $this->boardWithThreeOfAKind(dice(1), dice(2), dice(1), dice(1), dice(2))->totalScore());
+    $this->assertEquals(7, $this->boardWithThreeOfAKind(dice(1), dice(2), dice(1), dice(2), dice(1))->totalScore());
+    $this->assertEquals(7, $this->boardWithThreeOfAKind(dice(1), dice(2), dice(2), dice(1), dice(1))->totalScore());
+    $this->assertEquals(7, $this->boardWithThreeOfAKind(dice(2), dice(1), dice(1), dice(1), dice(2))->totalScore());
+    $this->assertEquals(7, $this->boardWithThreeOfAKind(dice(2), dice(1), dice(1), dice(1), dice(2))->totalScore());
+    $this->assertEquals(7, $this->boardWithThreeOfAKind(dice(2), dice(1), dice(1), dice(2), dice(1))->totalScore());
+    $this->assertEquals(7, $this->boardWithThreeOfAKind(dice(2), dice(1), dice(2), dice(1), dice(1))->totalScore());
+    $this->assertEquals(7, $this->boardWithThreeOfAKind(dice(2), dice(2), dice(1), dice(1), dice(1))->totalScore());
+  }
+
+  public function testThreeOfAKind_cannotModifyValueAfterSet() {
+    $y = new YahtzeeBoard();
+    
+    $y->scoreThreeOfAKind(dice(6), dice(1), dice(6), dice(2), dice(6));
+    $this->assertEquals(21, $y->totalScore());
+
+    $y->scoreThreeOfAKind(dice(6), dice(6), dice(6), dice(6), dice(6)); // Should this throw?
+    $this->assertEquals(21, $y->totalScore());
+
+    $y->scoreThreeOfAKind(dice(1), dice(2), dice(3), dice(4), dice(5)); // Should this throw?
+    $this->assertEquals(21, $y->totalScore());
+  }  
 
   /* Helpers */
   
@@ -255,6 +350,12 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
   private function boardWithSixes(Dice $first, Dice $second, Dice $third, Dice $fourth, Dice $fifth) {
     $y = new YahtzeeBoard();
     $y->scoreSixes($first, $second, $third, $fourth, $fifth);
+    return $y;
+  }
+
+  private function boardWithThreeOfAKind(Dice $first, Dice $second, Dice $third, Dice $fourth, Dice $fifth) {
+    $y = new YahtzeeBoard();
+    $y->scoreThreeOfAKind($first, $second, $third, $fourth, $fifth);
     return $y;
   }
 }

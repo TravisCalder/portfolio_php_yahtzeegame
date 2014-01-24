@@ -11,6 +11,15 @@ class YahtzeeBoard {
   private $fives;
   private $sixes;
 
+  private $threeOfAKind;
+  private $fourOfAKind;
+  private $fullHouse;
+  private $smallStraight;
+  private $largeStraight;
+  private $yahtzee;
+  private $chance;
+  private $yahtzeeBonusCount;
+
   public function __construct() {
     $this->ones = new None;
     $this->twos = new None;
@@ -18,10 +27,23 @@ class YahtzeeBoard {
     $this->fours = new None;
     $this->fives = new None;
     $this->sixes = new None;
+
+    $this->threeOfAKind = new None;
+    $this->fourOfAKind = new None;
+    $this->fullHouse = new None;
+    $this->smallStraight = new None;
+    $this->largeStraight = new None;
+    $this->yahtzee = new None;
+    $this->chance = new None;
+    $this->yahtzeeBonusCount = 0;
   }
 
   public function totalScore() {
-    return $this->upperScore();
+    return $this->upperScore() + $this->bonus() + $this->lowerScore();
+  }
+  
+  public function lowerScore() {
+    return $this->threeOfAKind->getOrElse(0);
   }
   
   public function upperScore() {
@@ -34,7 +56,7 @@ class YahtzeeBoard {
   }
   
   public function bonus() {
-    return 0;
+    return ($this->upperScore() >= 63) ? 35 : 0;
   }
 
   public function scoreOnes(Dice $first, Dice $second, Dice $third, Dice $fourth, Dice $fifth) {
@@ -59,6 +81,14 @@ class YahtzeeBoard {
 
   public function scoreSixes(Dice $first, Dice $second, Dice $third, Dice $fourth, Dice $fifth) {
     $this->sixes = $this->sixes->orElse($this->sumValuesEqualTo(6, [$first, $second, $third, $fourth, $fifth]));
+  }
+
+  public function scoreThreeOfAKind(Dice $first, Dice $second, Dice $third, Dice $fourth, Dice $fifth) {
+    $values = [$first->value(), $second->value(), $third->value(), $fourth->value(), $fifth->value()];
+    
+    $this->threeOfAKind = $this->threeOfAKind->orElse(
+      (sizeof(array_intersect([3,4,5], array_count_values($values))) > 0) ? array_sum($values) : 0
+    );
   }
 
   private function sumValuesEqualTo($value, array $dice) {
