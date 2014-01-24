@@ -1,5 +1,7 @@
 <?php
-class None implements Option {
+namespace crias;
+
+class None extends Option {
   
   public function __construct() {}
 
@@ -7,10 +9,6 @@ class None implements Option {
     return true; 
   }
 
-  public function isDefined() { 
-    return false; 
-  }
-  
   public function map($fn) {
     return new None;
   }

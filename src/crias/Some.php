@@ -1,5 +1,7 @@
 <?php
-class Some implements Option {
+namespace crias;
+
+class Some extends Option {
   
   private $value = null;
   
@@ -9,10 +11,6 @@ class Some implements Option {
 
   public function isEmpty() { 
     return false; 
-  }
-
-  public function isDefined() { 
-    return true; 
   }
   
   public function map($fn) {
