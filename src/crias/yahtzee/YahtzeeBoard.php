@@ -22,18 +22,20 @@ class YahtzeeBoard {
   
   // Intentionally bad implementation - fix it with a test!
   public function totalScore() {
-    return 
-      $this->ones->getOrElse(
-        $this->twos->getOrElse(
-          $this->threes->getOrElse(
-            $this->fours->getOrElse(
-              $this->fives->getOrElse(
-                $this->sixes->getOrElse(0)
-              )
-            )
-          )
-        )
-      );
+    return $this->upperScore();
+  }
+  
+  public function upperScore() {
+    return $this->ones->getOrElse(0) +
+      $this->twos->getOrElse(0) +
+      $this->threes->getOrElse(0) +
+      $this->fours->getOrElse(0) +
+      $this->fives->getOrElse(0) +
+      $this->sixes->getOrElse(0);
+  }
+  
+  public function bonus() {
+    return 0;
   }
   
   public function scoreOnes(Dice $first, Dice $second, Dice $third, Dice $fourth, Dice $fifth) {

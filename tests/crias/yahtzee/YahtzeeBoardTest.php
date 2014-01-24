@@ -201,6 +201,24 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
     $y->scoreSixes(dice(1), dice(2), dice(3), dice(4), dice(5)); // Should this throw?
     $this->assertEquals(18, $y->totalScore());
   }  
+  
+  /* Upper Board */
+  
+  public function testUpperBoard_shouldReturnSumOfAllUpperBoardValues_withNoBonus_whenTotalLessThan63() {
+    $y = new YahtzeeBoard();
+    
+    $y->scoreOnes(dice(1), dice(6), dice(6), dice(6), dice(6));
+    $y->scoreTwos(dice(2), dice(6), dice(6), dice(6), dice(6));
+    $y->scoreThrees(dice(3), dice(6), dice(6), dice(6), dice(6));
+    $y->scoreFours(dice(4), dice(6), dice(6), dice(6), dice(6));
+    $y->scoreFives(dice(5), dice(6), dice(6), dice(6), dice(6));
+    $y->scoreSixes(dice(6), dice(1), dice(1), dice(1), dice(1));
+    
+    $this->assertEquals(21, $y->totalScore());
+    $this->assertEquals(21, $y->upperScore());
+    $this->assertEquals(0, $y->bonus());
+  }
+  
 
   /* Helpers */
   
