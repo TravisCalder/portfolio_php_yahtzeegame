@@ -19,8 +19,7 @@ class YahtzeeBoard {
     $this->fives = new None;
     $this->sixes = new None;
   }
-  
-  // Intentionally bad implementation - fix it with a test!
+
   public function totalScore() {
     return $this->upperScore();
   }
@@ -37,7 +36,7 @@ class YahtzeeBoard {
   public function bonus() {
     return 0;
   }
-  
+
   public function scoreOnes(Dice $first, Dice $second, Dice $third, Dice $fourth, Dice $fifth) {
     $this->ones = $this->ones->orElse($this->sumValuesEqualTo(1, [$first, $second, $third, $fourth, $fifth]));
   }
