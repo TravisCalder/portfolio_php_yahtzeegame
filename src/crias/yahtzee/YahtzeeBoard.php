@@ -91,6 +91,14 @@ class YahtzeeBoard {
     );
   }
 
+  public function scoreFourOfAKind(Dice $first, Dice $second, Dice $third, Dice $fourth, Dice $fifth) {
+    $values = [$first->value(), $second->value(), $third->value(), $fourth->value(), $fifth->value()];
+    
+    $this->threeOfAKind = $this->threeOfAKind->orElse(
+      (sizeof(array_intersect([4,5], array_count_values($values))) > 0) ? array_sum($values) : 0
+    );
+  }
+
   private function sumValuesEqualTo($value, array $dice) {
     $total = 0;
     for($i = 0; $i < sizeof($dice); $i++) {
