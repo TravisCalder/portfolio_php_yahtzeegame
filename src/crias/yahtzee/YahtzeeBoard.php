@@ -43,7 +43,9 @@ class YahtzeeBoard {
   }
   
   public function lowerScore() {
-    return $this->threeOfAKind->getOrElse(0);
+    return $this->threeOfAKind->getOrElse(0) +
+      $this->fourOfAKind->getOrElse(0) +
+      $this->fullHouse->getOrElse(0);
   }
   
   public function upperScore() {
@@ -92,20 +94,27 @@ class YahtzeeBoard {
   }
 
   public function scoreFourOfAKind(Dice $first, Dice $second, Dice $third, Dice $fourth, Dice $fifth) {
-    $values = [$first->value(), $second->value(), $third->value(), $fourth->value(), $fifth->value()];
+    $values = $this->diceValues([$first, $second, $third, $fourth, $fifth]);
     
-    $this->threeOfAKind = $this->threeOfAKind->orElse(
+    $this->fourOfAKind = $this->fourOfAKind->orElse(
       (sizeof(array_intersect([4,5], array_count_values($values))) > 0) ? array_sum($values) : 0
     );
   }
 
+  public function scoreFullHouse(Dice $first, Dice $second, Dice $third, Dice $fourth, Dice $fifth) {
+    $values = $this->diceValues([$first, $second, $third, $fourth, $fifth]);
+    
+    $this->fullHouse = $this->fullHouse->orElse(
+      (sizeof(array_intersect([2,3], array_count_values($values))) == 2) ? 25 : 0
+    );
+  }
+
+  private function diceValues(array $dice) {
+    return array_map(function($d) { return $d->value(); }, $dice);
+  }
+
   private function sumValuesEqualTo($value, array $dice) {
-    $total = 0;
-    for($i = 0; $i < sizeof($dice); $i++) {
-      if($dice[$i]->value() == $value) {
-        $total = $total + $value;
-      }
-    }
-    return $total;
+    $counted = array_count_values($this->diceValues($dice));
+    return isset($counted[$value]) ? $counted[$value] * $value : 0;
   }
 }

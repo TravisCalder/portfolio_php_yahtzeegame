@@ -30,9 +30,7 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
   }
 
   public function testOnes_cannotModifyOnesAfterTheyAreScored() {
-    $y = new YahtzeeBoard();
-    
-    $y->scoreOnes(dice(1), dice(2), dice(1), dice(3), dice(1));
+    $y = $this->newScoreSheet('scoreOnes', dice(1), dice(2), dice(1), dice(3), dice(1));
     $this->assertEquals(3, $y->totalScore());
 
     $y->scoreOnes(dice(1), dice(1), dice(1), dice(1), dice(1)); // Should this throw?
@@ -62,9 +60,7 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
   }
 
   public function testTwos_cannotModifyTwosAfterTheyAreScored() {
-    $y = new YahtzeeBoard();
-    
-    $y->scoreTwos(dice(2), dice(1), dice(2), dice(3), dice(2));
+    $y = $this->newScoreSheet('scoreTwos', dice(2), dice(1), dice(2), dice(3), dice(2));
     $this->assertEquals(6, $y->totalScore());
 
     $y->scoreTwos(dice(2), dice(2), dice(2), dice(2), dice(2)); // Should this throw?
@@ -94,9 +90,7 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
   }
 
   public function testThrees_cannotModifyThreesAfterTheyAreScored() {
-    $y = new YahtzeeBoard();
-    
-    $y->scoreThrees(dice(3), dice(1), dice(3), dice(2), dice(3));
+    $y = $this->newScoreSheet('scoreThrees', dice(3), dice(1), dice(3), dice(2), dice(3));
     $this->assertEquals(9, $y->totalScore());
 
     $y->scoreThrees(dice(3), dice(3), dice(3), dice(3), dice(3)); // Should this throw?
@@ -126,9 +120,7 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
   }
 
   public function testFours_cannotModifyFoursAfterTheyAreScored() {
-    $y = new YahtzeeBoard();
-    
-    $y->scoreFours(dice(4), dice(1), dice(4), dice(2), dice(4));
+    $y = $this->newScoreSheet('scoreFours', dice(4), dice(1), dice(4), dice(2), dice(4));
     $this->assertEquals(12, $y->totalScore());
 
     $y->scoreFours(dice(4), dice(4), dice(4), dice(4), dice(4)); // Should this throw?
@@ -158,9 +150,7 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
   }
 
   public function testFives_cannotModifyFivesAfterTheyAreScored() {
-    $y = new YahtzeeBoard();
-    
-    $y->scoreFives(dice(5), dice(1), dice(5), dice(2), dice(5));
+    $y = $this->newScoreSheet('scoreFives', dice(5), dice(1), dice(5), dice(2), dice(5));
     $this->assertEquals(15, $y->totalScore());
 
     $y->scoreFives(dice(5), dice(5), dice(5), dice(5), dice(5)); // Should this throw?
@@ -190,9 +180,7 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
   }
 
   public function testSixes_cannotModifySixesAfterTheyAreScored() {
-    $y = new YahtzeeBoard();
-    
-    $y->scoreSixes(dice(6), dice(1), dice(6), dice(2), dice(6));
+    $y = $this->newScoreSheet('scoreSixes', dice(6), dice(1), dice(6), dice(2), dice(6));
     $this->assertEquals(18, $y->totalScore());
 
     $y->scoreSixes(dice(6), dice(6), dice(6), dice(6), dice(6)); // Should this throw?
@@ -303,9 +291,7 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
   }
 
   public function testThreeOfAKind_cannotModifyValueAfterSet() {
-    $y = new YahtzeeBoard();
-    
-    $y->scoreThreeOfAKind(dice(6), dice(1), dice(6), dice(2), dice(6));
+    $y = $this->newScoreSheet('scoreThreeOfAKind', dice(6), dice(1), dice(6), dice(2), dice(6));
     $this->assertEquals(21, $y->totalScore());
 
     $y->scoreThreeOfAKind(dice(6), dice(6), dice(6), dice(6), dice(6)); // Should this throw?
@@ -363,9 +349,7 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
   }
 
   public function testFourOfAKind_cannotModifyValueAfterSet() {
-    $y = new YahtzeeBoard();
-    
-    $y->scoreFourOfAKind(dice(6), dice(1), dice(6), dice(6), dice(6));
+    $y = $this->newScoreSheet('scoreFourOfAKind', dice(6), dice(1), dice(6), dice(6), dice(6));
     $this->assertEquals(25, $y->totalScore());
 
     $y->scoreFourOfAKind(dice(6), dice(6), dice(6), dice(6), dice(6)); // Should this throw?
@@ -375,6 +359,83 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(25, $y->totalScore());
   }  
 
+  /* Full House */
+  
+  public function testFullHouse_shouldReturn25_whenThereAreNotExactlyThreeOfOneValueAndTwoOfAnother() {
+    $this->assertEquals(0, $this->newScoreSheet('scoreFullHouse', dice(1), dice(2), dice(3), dice(4), dice(5))->totalScore());
+    $this->assertEquals(0, $this->newScoreSheet('scoreFullHouse', dice(1), dice(2), dice(3), dice(5), dice(5))->totalScore());
+    $this->assertEquals(0, $this->newScoreSheet('scoreFullHouse', dice(1), dice(2), dice(5), dice(5), dice(5))->totalScore());
+    $this->assertEquals(0, $this->newScoreSheet('scoreFullHouse', dice(1), dice(5), dice(5), dice(5), dice(5))->totalScore());
+    $this->assertEquals(0, $this->newScoreSheet('scoreFullHouse', dice(1), dice(1), dice(3), dice(4), dice(5))->totalScore());
+    $this->assertEquals(0, $this->newScoreSheet('scoreFullHouse', dice(1), dice(1), dice(3), dice(5), dice(5))->totalScore());
+    $this->assertEquals(0, $this->newScoreSheet('scoreFullHouse', dice(1), dice(1), dice(1), dice(4), dice(5))->totalScore());
+    $this->assertEquals(0, $this->newScoreSheet('scoreFullHouse', dice(1), dice(1), dice(1), dice(1), dice(5))->totalScore());
+  }
+  
+  public function testFullHouse_shouldReturn25_whenThereAreThreeOfOneValueAndTwoOfAnother() {
+    $this->assertEquals(25, $this->newScoreSheet('scoreFullHouse', dice(1), dice(1), dice(1), dice(2), dice(2))->totalScore());
+    $this->assertEquals(25, $this->newScoreSheet('scoreFullHouse', dice(1), dice(1), dice(1), dice(3), dice(3))->totalScore());
+    $this->assertEquals(25, $this->newScoreSheet('scoreFullHouse', dice(1), dice(1), dice(1), dice(4), dice(4))->totalScore());
+    $this->assertEquals(25, $this->newScoreSheet('scoreFullHouse', dice(1), dice(1), dice(1), dice(5), dice(5))->totalScore());
+    $this->assertEquals(25, $this->newScoreSheet('scoreFullHouse', dice(1), dice(1), dice(1), dice(6), dice(6))->totalScore());
+    
+    $this->assertEquals(25, $this->newScoreSheet('scoreFullHouse', dice(2), dice(2), dice(2), dice(1), dice(1))->totalScore());
+    $this->assertEquals(25, $this->newScoreSheet('scoreFullHouse', dice(2), dice(2), dice(2), dice(3), dice(3))->totalScore());
+    $this->assertEquals(25, $this->newScoreSheet('scoreFullHouse', dice(2), dice(2), dice(2), dice(4), dice(4))->totalScore());
+    $this->assertEquals(25, $this->newScoreSheet('scoreFullHouse', dice(2), dice(2), dice(2), dice(5), dice(5))->totalScore());
+    $this->assertEquals(25, $this->newScoreSheet('scoreFullHouse', dice(2), dice(2), dice(2), dice(6), dice(6))->totalScore());
+
+    $this->assertEquals(25, $this->newScoreSheet('scoreFullHouse', dice(3), dice(3), dice(3), dice(2), dice(2))->totalScore());
+    $this->assertEquals(25, $this->newScoreSheet('scoreFullHouse', dice(3), dice(3), dice(3), dice(1), dice(1))->totalScore());
+    $this->assertEquals(25, $this->newScoreSheet('scoreFullHouse', dice(3), dice(3), dice(3), dice(4), dice(4))->totalScore());
+    $this->assertEquals(25, $this->newScoreSheet('scoreFullHouse', dice(3), dice(3), dice(3), dice(5), dice(5))->totalScore());
+    $this->assertEquals(25, $this->newScoreSheet('scoreFullHouse', dice(3), dice(3), dice(3), dice(6), dice(6))->totalScore());
+
+    $this->assertEquals(25, $this->newScoreSheet('scoreFullHouse', dice(4), dice(4), dice(4), dice(2), dice(2))->totalScore());
+    $this->assertEquals(25, $this->newScoreSheet('scoreFullHouse', dice(4), dice(4), dice(4), dice(3), dice(3))->totalScore());
+    $this->assertEquals(25, $this->newScoreSheet('scoreFullHouse', dice(4), dice(4), dice(4), dice(1), dice(1))->totalScore());
+    $this->assertEquals(25, $this->newScoreSheet('scoreFullHouse', dice(4), dice(4), dice(4), dice(5), dice(5))->totalScore());
+    $this->assertEquals(25, $this->newScoreSheet('scoreFullHouse', dice(4), dice(4), dice(4), dice(6), dice(6))->totalScore());
+    
+    $this->assertEquals(25, $this->newScoreSheet('scoreFullHouse', dice(5), dice(5), dice(5), dice(2), dice(2))->totalScore());
+    $this->assertEquals(25, $this->newScoreSheet('scoreFullHouse', dice(5), dice(5), dice(5), dice(3), dice(3))->totalScore());
+    $this->assertEquals(25, $this->newScoreSheet('scoreFullHouse', dice(5), dice(5), dice(5), dice(4), dice(4))->totalScore());
+    $this->assertEquals(25, $this->newScoreSheet('scoreFullHouse', dice(5), dice(5), dice(5), dice(1), dice(1))->totalScore());
+    $this->assertEquals(25, $this->newScoreSheet('scoreFullHouse', dice(5), dice(5), dice(5), dice(6), dice(6))->totalScore());
+    
+    $this->assertEquals(25, $this->newScoreSheet('scoreFullHouse', dice(6), dice(6), dice(6), dice(2), dice(2))->totalScore());
+    $this->assertEquals(25, $this->newScoreSheet('scoreFullHouse', dice(6), dice(6), dice(6), dice(3), dice(3))->totalScore());
+    $this->assertEquals(25, $this->newScoreSheet('scoreFullHouse', dice(6), dice(6), dice(6), dice(4), dice(4))->totalScore());
+    $this->assertEquals(25, $this->newScoreSheet('scoreFullHouse', dice(6), dice(6), dice(6), dice(5), dice(5))->totalScore());
+    $this->assertEquals(25, $this->newScoreSheet('scoreFullHouse', dice(6), dice(6), dice(6), dice(1), dice(1))->totalScore());
+  }
+
+  public function testFullHouse_groupingDoesntMatter() {
+    $this->assertEquals(25, $this->newScoreSheet('scoreFullHouse', dice(6), dice(6), dice(6), dice(2), dice(2))->totalScore());
+    $this->assertEquals(25, $this->newScoreSheet('scoreFullHouse', dice(6), dice(6), dice(2), dice(6), dice(2))->totalScore());
+    $this->assertEquals(25, $this->newScoreSheet('scoreFullHouse', dice(6), dice(6), dice(2), dice(2), dice(6))->totalScore());
+    $this->assertEquals(25, $this->newScoreSheet('scoreFullHouse', dice(6), dice(2), dice(6), dice(6), dice(2))->totalScore());
+    $this->assertEquals(25, $this->newScoreSheet('scoreFullHouse', dice(6), dice(2), dice(6), dice(2), dice(6))->totalScore());
+    $this->assertEquals(25, $this->newScoreSheet('scoreFullHouse', dice(6), dice(2), dice(2), dice(6), dice(6))->totalScore());
+    $this->assertEquals(25, $this->newScoreSheet('scoreFullHouse', dice(2), dice(6), dice(6), dice(6), dice(2))->totalScore());
+    $this->assertEquals(25, $this->newScoreSheet('scoreFullHouse', dice(2), dice(6), dice(6), dice(2), dice(6))->totalScore());
+    $this->assertEquals(25, $this->newScoreSheet('scoreFullHouse', dice(2), dice(6), dice(2), dice(6), dice(6))->totalScore());
+    $this->assertEquals(25, $this->newScoreSheet('scoreFullHouse', dice(2), dice(2), dice(6), dice(6), dice(6))->totalScore());
+  }
+
+  public function testFullHouse_cannotModifyValueAfterSet() {
+    $y1 = $this->newScoreSheet('scoreFullHouse', dice(6), dice(1), dice(6), dice(1), dice(6));
+    $this->assertEquals(25, $y1->totalScore());
+
+    $y1->scoreFullHouse(dice(1), dice(2), dice(3), dice(4), dice(5)); // Should this throw?
+    $this->assertEquals(25, $y1->totalScore());
+
+    $y2 = $this->newScoreSheet('scoreFullHouse', dice(1), dice(2), dice(3), dice(4), dice(5));
+    $this->assertEquals(0, $y2->totalScore());
+
+    $y2->scoreFullHouse(dice(6), dice(1), dice(6), dice(1), dice(6)); // Should this throw?
+    $this->assertEquals(0, $y2->totalScore());
+  }  
 
   /* Helpers */
   
