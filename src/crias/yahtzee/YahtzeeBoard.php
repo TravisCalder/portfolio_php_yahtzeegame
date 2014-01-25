@@ -46,7 +46,8 @@ class YahtzeeBoard {
     return $this->threeOfAKind->getOrElse(0) +
       $this->fourOfAKind->getOrElse(0) +
       $this->fullHouse->getOrElse(0) +
-      $this->smallStraight->getOrElse(0);
+      $this->smallStraight->getOrElse(0) +
+      $this->largeStraight->getOrElse(0);
   }
   
   public function upperScore() {
@@ -87,10 +88,10 @@ class YahtzeeBoard {
   }
 
   public function scoreThreeOfAKind(Dice $first, Dice $second, Dice $third, Dice $fourth, Dice $fifth) {
-    $values = [$first->value(), $second->value(), $third->value(), $fourth->value(), $fifth->value()];
+    $values = $this->diceValues([$first, $second, $third, $fourth, $fifth]);
     
     $this->threeOfAKind = $this->threeOfAKind->orElse(
-      (sizeof(array_intersect([3,4,5], array_count_values($values))) > 0) ? array_sum($values) : 0
+      (sizeof(array_intersect([3, 4, 5], array_count_values($values))) > 0) ? array_sum($values) : 0
     );
   }
 
@@ -98,7 +99,7 @@ class YahtzeeBoard {
     $values = $this->diceValues([$first, $second, $third, $fourth, $fifth]);
     
     $this->fourOfAKind = $this->fourOfAKind->orElse(
-      (sizeof(array_intersect([4,5], array_count_values($values))) > 0) ? array_sum($values) : 0
+      (sizeof(array_intersect([4, 5], array_count_values($values))) > 0) ? array_sum($values) : 0
     );
   }
 
@@ -106,19 +107,30 @@ class YahtzeeBoard {
     $values = $this->diceValues([$first, $second, $third, $fourth, $fifth]);
     
     $this->fullHouse = $this->fullHouse->orElse(
-      (sizeof(array_intersect([2,3], array_count_values($values))) == 2) ? 25 : 0
+      (sizeof(array_intersect([2, 3], array_count_values($values))) == 2) ? 25 : 0
     );
   }
 
   public function scoreSmallStraight(Dice $first, Dice $second, Dice $third, Dice $fourth, Dice $fifth) {
     $values = $this->diceValues([$first, $second, $third, $fourth, $fifth]);
-    sort($values);
 
     $this->smallStraight = $this->smallStraight->orElse(
-      (sizeof(array_intersect([1,2,3,4], $values)) >= 4 ||
-        sizeof(array_intersect([2,3,4,5], $values)) >= 4 ||
-        sizeof(array_intersect([3,4,5,6], $values)) >= 4) ? 30 : 0
+      ($this->containsRange(1, 4, $values) || $this->containsRange(2, 5, $values) || $this->containsRange(3, 6, $values)) ? 30 : 0
     );
+  }
+
+  public function scoreLargeStraight(Dice $first, Dice $second, Dice $third, Dice $fourth, Dice $fifth) {
+    $values = $this->diceValues([$first, $second, $third, $fourth, $fifth]);
+
+    $this->largeStraight = $this->largeStraight->orElse(
+      ($this->containsRange(1, 5, $values) || $this->containsRange(2, 6, $values)) ? 40 : 0
+    );
+  }
+
+  private function containsRange($start, $end, array $diceValues) {
+    $testValues = range($start, $end);
+
+    return sizeof(array_intersect($testValues, $diceValues)) >= sizeof($testValues);
   }
 
   private function diceValues(array $dice) {
