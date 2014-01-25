@@ -39,7 +39,11 @@ class YahtzeeBoard {
   }
 
   public function totalScore() {
-    return $this->upperScore() + $this->bonus() + $this->lowerScore();
+    return $this->upperScore() + $this->bonus() + $this->lowerScore() + $this->yahtzeeBonus();
+  }
+  
+  public function yahtzeeBonus() {
+    return $this->yahtzeeBonusCount * 100;
   }
   
   public function lowerScore() {
@@ -66,27 +70,39 @@ class YahtzeeBoard {
   }
 
   public function scoreOnes(Dice $first, Dice $second, Dice $third, Dice $fourth, Dice $fifth) {
-    $this->ones = $this->ones->orElse($this->sumValuesEqualTo(1, [$first, $second, $third, $fourth, $fifth]));
+    $dice = [$first, $second, $third, $fourth, $fifth];
+    $this->ones = $this->ones->orElse($this->sumValuesEqualTo(1, $dice));
+    $this->scoreBonusYahtzeeIfApplicable($dice);
   }
   
   public function scoreTwos(Dice $first, Dice $second, Dice $third, Dice $fourth, Dice $fifth) {
-    $this->twos = $this->twos->orElse($this->sumValuesEqualTo(2, [$first, $second, $third, $fourth, $fifth]));
+    $dice = [$first, $second, $third, $fourth, $fifth];
+    $this->twos = $this->twos->orElse($this->sumValuesEqualTo(2, $dice));
+    $this->scoreBonusYahtzeeIfApplicable($dice);
   }
 
   public function scoreThrees(Dice $first, Dice $second, Dice $third, Dice $fourth, Dice $fifth) {
-    $this->threes = $this->threes->orElse($this->sumValuesEqualTo(3, [$first, $second, $third, $fourth, $fifth]));
+    $dice = [$first, $second, $third, $fourth, $fifth];
+    $this->threes = $this->threes->orElse($this->sumValuesEqualTo(3, $dice));
+    $this->scoreBonusYahtzeeIfApplicable($dice);
   }
 
   public function scoreFours(Dice $first, Dice $second, Dice $third, Dice $fourth, Dice $fifth) {
-    $this->fours = $this->fours->orElse($this->sumValuesEqualTo(4, [$first, $second, $third, $fourth, $fifth]));
+    $dice = [$first, $second, $third, $fourth, $fifth];
+    $this->fours = $this->fours->orElse($this->sumValuesEqualTo(4, $dice));
+    $this->scoreBonusYahtzeeIfApplicable($dice);
   }
 
   public function scoreFives(Dice $first, Dice $second, Dice $third, Dice $fourth, Dice $fifth) {
-    $this->fives = $this->fives->orElse($this->sumValuesEqualTo(5, [$first, $second, $third, $fourth, $fifth]));
+    $dice = [$first, $second, $third, $fourth, $fifth];
+    $this->fives = $this->fives->orElse($this->sumValuesEqualTo(5, $dice));
+    $this->scoreBonusYahtzeeIfApplicable($dice);
   }
 
   public function scoreSixes(Dice $first, Dice $second, Dice $third, Dice $fourth, Dice $fifth) {
-    $this->sixes = $this->sixes->orElse($this->sumValuesEqualTo(6, [$first, $second, $third, $fourth, $fifth]));
+    $dice = [$first, $second, $third, $fourth, $fifth];
+    $this->sixes = $this->sixes->orElse($this->sumValuesEqualTo(6, $dice));
+    $this->scoreBonusYahtzeeIfApplicable($dice);
   }
 
   public function scoreThreeOfAKind(Dice $first, Dice $second, Dice $third, Dice $fourth, Dice $fifth) {
@@ -141,6 +157,14 @@ class YahtzeeBoard {
     $values = $this->diceValues([$first, $second, $third, $fourth, $fifth]);
 
     $this->chance = $this->chance->orElse(array_sum($values));
+  }
+  
+  private function scoreBonusYahtzeeIfApplicable(array $dice) {
+    $values = $this->diceValues($dice);
+    
+    if($this->yahtzee->isDefined()) {
+      $this->yahtzeeBonusCount += (sizeof(array_intersect([5], array_count_values($values))) > 0) ? 1 : 0;
+    }
   }
 
   private function containsRange($start, $end, array $diceValues) {
