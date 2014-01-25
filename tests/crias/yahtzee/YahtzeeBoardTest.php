@@ -493,18 +493,17 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
     $y1 = $this->newScoreSheet('scoreSmallStraight', dice(6), dice(1), dice(2), dice(3), dice(4));
     $this->assertEquals(30, $y1->totalScore());
 
-    $y1->scoreFullHouse(dice(1), dice(1), dice(1), dice(1), dice(1)); // Should this throw?
+    $y1->scoreSmallStraight(dice(1), dice(1), dice(1), dice(1), dice(1)); // Should this throw?
     $this->assertEquals(30, $y1->totalScore());
 
     $y2 = $this->newScoreSheet('scoreSmallStraight', dice(1), dice(1), dice(1), dice(1), dice(1));
     $this->assertEquals(0, $y2->totalScore());
 
-    $y2->scoreFullHouse(dice(6), dice(1), dice(2), dice(3), dice(4)); // Should this throw?
+    $y2->scoreSmallStraight(dice(6), dice(1), dice(2), dice(3), dice(4)); // Should this throw?
     $this->assertEquals(0, $y2->totalScore());
   }  
 
-
-  /* Small Straight */
+  /* Large Straight */
 
   public function testLargeStraight_shouldReturn0_whenThereAreNotFiveNumbersInSequence() {
     $this->assertEquals(0, $this->newScoreSheet('scoreLargeStraight', dice(1), dice(2), dice(3), dice(1), dice(1))->totalScore());
@@ -537,13 +536,45 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
     $y1 = $this->newScoreSheet('scoreLargeStraight', dice(5), dice(1), dice(2), dice(3), dice(4));
     $this->assertEquals(40, $y1->totalScore());
 
-    $y1->scoreFullHouse(dice(1), dice(1), dice(1), dice(1), dice(1)); // Should this throw?
+    $y1->scoreLargeStraight(dice(1), dice(1), dice(1), dice(1), dice(1)); // Should this throw?
     $this->assertEquals(40, $y1->totalScore());
 
     $y2 = $this->newScoreSheet('scoreLargeStraight', dice(1), dice(1), dice(1), dice(1), dice(1));
     $this->assertEquals(0, $y2->totalScore());
 
-    $y2->scoreFullHouse(dice(5), dice(1), dice(2), dice(3), dice(4)); // Should this throw?
+    $y2->scoreLargeStraight(dice(5), dice(1), dice(2), dice(3), dice(4)); // Should this throw?
+    $this->assertEquals(0, $y2->totalScore());
+  }  
+
+  /* YAHTZEE! */
+
+  public function testYahtzee_shouldReturn0_thereAreFewerThanFiveOfAKind() {
+    $this->assertEquals(0, $this->newScoreSheet('scoreYahtzee', dice(1), dice(2), dice(3), dice(1), dice(1))->totalScore());
+    $this->assertEquals(0, $this->newScoreSheet('scoreYahtzee', dice(1), dice(1), dice(1), dice(1), dice(6))->totalScore());
+    $this->assertEquals(0, $this->newScoreSheet('scoreYahtzee', dice(1), dice(2), dice(3), dice(5), dice(6))->totalScore());
+    $this->assertEquals(0, $this->newScoreSheet('scoreYahtzee', dice(1), dice(2), dice(3), dice(4), dice(1))->totalScore());
+  }
+  
+  public function testYahtzee_shouldReturn50_whenThereAreFiveNumbersInSequence() {
+    $this->assertEquals(50, $this->newScoreSheet('scoreYahtzee', dice(1), dice(1), dice(1), dice(1), dice(1))->totalScore());
+    $this->assertEquals(50, $this->newScoreSheet('scoreYahtzee', dice(2), dice(2), dice(2), dice(2), dice(2))->totalScore());
+    $this->assertEquals(50, $this->newScoreSheet('scoreYahtzee', dice(3), dice(3), dice(3), dice(3), dice(3))->totalScore());
+    $this->assertEquals(50, $this->newScoreSheet('scoreYahtzee', dice(4), dice(4), dice(4), dice(4), dice(4))->totalScore());
+    $this->assertEquals(50, $this->newScoreSheet('scoreYahtzee', dice(5), dice(5), dice(5), dice(5), dice(5))->totalScore());
+    $this->assertEquals(50, $this->newScoreSheet('scoreYahtzee', dice(6), dice(6), dice(6), dice(6), dice(6))->totalScore());
+  }
+
+  public function testYahtzee_cannotModifyValueAfterSet() {
+    $y1 = $this->newScoreSheet('scoreYahtzee', dice(1), dice(1), dice(1), dice(1), dice(1));
+    $this->assertEquals(50, $y1->totalScore());
+
+    $y1->scoreYahtzee(dice(1), dice(2), dice(3), dice(4), dice(5)); // Should this throw?
+    $this->assertEquals(50, $y1->totalScore());
+
+    $y2 = $this->newScoreSheet('scoreYahtzee', dice(1), dice(2), dice(3), dice(4), dice(5));
+    $this->assertEquals(0, $y2->totalScore());
+
+    $y2->scoreYahtzee(dice(1), dice(1), dice(1), dice(1), dice(1)); // Should this throw?
     $this->assertEquals(0, $y2->totalScore());
   }  
 

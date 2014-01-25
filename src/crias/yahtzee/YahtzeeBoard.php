@@ -47,7 +47,8 @@ class YahtzeeBoard {
       $this->fourOfAKind->getOrElse(0) +
       $this->fullHouse->getOrElse(0) +
       $this->smallStraight->getOrElse(0) +
-      $this->largeStraight->getOrElse(0);
+      $this->largeStraight->getOrElse(0) +
+      $this->yahtzee->getOrElse(0);
   }
   
   public function upperScore() {
@@ -124,6 +125,14 @@ class YahtzeeBoard {
 
     $this->largeStraight = $this->largeStraight->orElse(
       ($this->containsRange(1, 5, $values) || $this->containsRange(2, 6, $values)) ? 40 : 0
+    );
+  }
+
+  public function scoreYahtzee(Dice $first, Dice $second, Dice $third, Dice $fourth, Dice $fifth) {
+    $values = $this->diceValues([$first, $second, $third, $fourth, $fifth]);
+    
+    $this->yahtzee = $this->yahtzee->orElse(
+      (sizeof(array_intersect([5], array_count_values($values))) > 0) ? 50 : 0
     );
   }
 
