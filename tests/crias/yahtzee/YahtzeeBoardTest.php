@@ -1,8 +1,11 @@
 <?php
 namespace crias\yahtzee;
+use Exception;
+use crias\testing\ExceptionTesting;
 use PHPUnit_Framework_TestCase;
 
 class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
+  use ExceptionTesting;
   
   public function testTotalScore_shouldReturnZero_whenNoScoringHasOccurred() {
     $y = new YahtzeeBoard();
@@ -33,10 +36,14 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
     $y = $this->newScoreSheet('scoreOnes', dice(1), dice(2), dice(1), dice(3), dice(1));
     $this->assertEquals(3, $y->totalScore());
 
-    $y->scoreOnes(dice(1), dice(1), dice(1), dice(1), dice(1)); // Should this throw?
+    $this->assertException(new Exception("Field has already been scored"), function() use ($y) {
+      $y->scoreOnes(dice(1), dice(1), dice(1), dice(1), dice(1));
+    });
     $this->assertEquals(3, $y->totalScore());
 
-    $y->scoreOnes(dice(2), dice(3), dice(4), dice(5), dice(6)); // Should this throw?
+    $this->assertException(new Exception("Field has already been scored"), function() use ($y) {
+      $y->scoreOnes(dice(2), dice(3), dice(4), dice(5), dice(6));
+    });
     $this->assertEquals(3, $y->totalScore());
   }
 
@@ -63,10 +70,14 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
     $y = $this->newScoreSheet('scoreTwos', dice(2), dice(1), dice(2), dice(3), dice(2));
     $this->assertEquals(6, $y->totalScore());
 
-    $y->scoreTwos(dice(2), dice(2), dice(2), dice(2), dice(2)); // Should this throw?
+    $this->assertException(new Exception("Field has already been scored"), function() use ($y) {
+      $y->scoreTwos(dice(2), dice(2), dice(2), dice(2), dice(2));
+    });
     $this->assertEquals(6, $y->totalScore());
 
-    $y->scoreTwos(dice(1), dice(3), dice(4), dice(5), dice(6)); // Should this throw?
+    $this->assertException(new Exception("Field has already been scored"), function() use ($y) {
+      $y->scoreTwos(dice(1), dice(3), dice(4), dice(5), dice(6));
+    });
     $this->assertEquals(6, $y->totalScore());
   }
 
@@ -93,10 +104,14 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
     $y = $this->newScoreSheet('scoreThrees', dice(3), dice(1), dice(3), dice(2), dice(3));
     $this->assertEquals(9, $y->totalScore());
 
-    $y->scoreThrees(dice(3), dice(3), dice(3), dice(3), dice(3)); // Should this throw?
+    $this->assertException(new Exception("Field has already been scored"), function() use ($y) {
+      $y->scoreThrees(dice(3), dice(3), dice(3), dice(3), dice(3));
+    });
     $this->assertEquals(9, $y->totalScore());
 
-    $y->scoreThrees(dice(1), dice(2), dice(4), dice(5), dice(6)); // Should this throw?
+    $this->assertException(new Exception("Field has already been scored"), function() use ($y) {
+      $y->scoreThrees(dice(1), dice(2), dice(4), dice(5), dice(6));
+    });
     $this->assertEquals(9, $y->totalScore());
   }
   
@@ -123,10 +138,14 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
     $y = $this->newScoreSheet('scoreFours', dice(4), dice(1), dice(4), dice(2), dice(4));
     $this->assertEquals(12, $y->totalScore());
 
-    $y->scoreFours(dice(4), dice(4), dice(4), dice(4), dice(4)); // Should this throw?
+    $this->assertException(new Exception("Field has already been scored"), function() use ($y) {
+      $y->scoreFours(dice(4), dice(4), dice(4), dice(4), dice(4));
+    });
     $this->assertEquals(12, $y->totalScore());
 
-    $y->scoreFours(dice(1), dice(2), dice(3), dice(5), dice(6)); // Should this throw?
+    $this->assertException(new Exception("Field has already been scored"), function() use ($y) {
+      $y->scoreFours(dice(1), dice(2), dice(3), dice(5), dice(6));
+    });
     $this->assertEquals(12, $y->totalScore());
   }  
 
@@ -153,10 +172,14 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
     $y = $this->newScoreSheet('scoreFives', dice(5), dice(1), dice(5), dice(2), dice(5));
     $this->assertEquals(15, $y->totalScore());
 
-    $y->scoreFives(dice(5), dice(5), dice(5), dice(5), dice(5)); // Should this throw?
+    $this->assertException(new Exception("Field has already been scored"), function() use ($y) {
+      $y->scoreFives(dice(5), dice(5), dice(5), dice(5), dice(5));
+    });
     $this->assertEquals(15, $y->totalScore());
 
-    $y->scoreFives(dice(1), dice(2), dice(3), dice(4), dice(6)); // Should this throw?
+    $this->assertException(new Exception("Field has already been scored"), function() use ($y) {
+      $y->scoreFives(dice(1), dice(2), dice(3), dice(4), dice(6));
+    });
     $this->assertEquals(15, $y->totalScore());
   }  
 
@@ -183,10 +206,14 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
     $y = $this->newScoreSheet('scoreSixes', dice(6), dice(1), dice(6), dice(2), dice(6));
     $this->assertEquals(18, $y->totalScore());
 
-    $y->scoreSixes(dice(6), dice(6), dice(6), dice(6), dice(6)); // Should this throw?
+    $this->assertException(new Exception("Field has already been scored"), function() use ($y) {
+      $y->scoreSixes(dice(6), dice(6), dice(6), dice(6), dice(6));
+    });
     $this->assertEquals(18, $y->totalScore());
 
-    $y->scoreSixes(dice(1), dice(2), dice(3), dice(4), dice(5)); // Should this throw?
+    $this->assertException(new Exception("Field has already been scored"), function() use ($y) {
+      $y->scoreSixes(dice(1), dice(2), dice(3), dice(4), dice(5));
+    });
     $this->assertEquals(18, $y->totalScore());
   }  
   
@@ -294,10 +321,14 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
     $y = $this->newScoreSheet('scoreThreeOfAKind', dice(6), dice(1), dice(6), dice(2), dice(6));
     $this->assertEquals(21, $y->totalScore());
 
-    $y->scoreThreeOfAKind(dice(6), dice(6), dice(6), dice(6), dice(6)); // Should this throw?
+    $this->assertException(new Exception("Field has already been scored"), function() use ($y) {
+      $y->scoreThreeOfAKind(dice(6), dice(6), dice(6), dice(6), dice(6));
+    });
     $this->assertEquals(21, $y->totalScore());
 
-    $y->scoreThreeOfAKind(dice(1), dice(2), dice(3), dice(4), dice(5)); // Should this throw?
+    $this->assertException(new Exception("Field has already been scored"), function() use ($y) {
+      $y->scoreThreeOfAKind(dice(1), dice(2), dice(3), dice(4), dice(5));
+    });
     $this->assertEquals(21, $y->totalScore());
   }  
 
@@ -352,10 +383,14 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
     $y = $this->newScoreSheet('scoreFourOfAKind', dice(6), dice(1), dice(6), dice(6), dice(6));
     $this->assertEquals(25, $y->totalScore());
 
-    $y->scoreFourOfAKind(dice(6), dice(6), dice(6), dice(6), dice(6)); // Should this throw?
+    $this->assertException(new Exception("Field has already been scored"), function() use ($y) {
+      $y->scoreFourOfAKind(dice(6), dice(6), dice(6), dice(6), dice(6));
+    });
     $this->assertEquals(25, $y->totalScore());
 
-    $y->scoreFourOfAKind(dice(1), dice(2), dice(3), dice(4), dice(5)); // Should this throw?
+    $this->assertException(new Exception("Field has already been scored"), function() use ($y) {
+      $y->scoreFourOfAKind(dice(1), dice(2), dice(3), dice(4), dice(5));
+    });
     $this->assertEquals(25, $y->totalScore());
   }  
 
@@ -427,13 +462,17 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
     $y1 = $this->newScoreSheet('scoreFullHouse', dice(6), dice(1), dice(6), dice(1), dice(6));
     $this->assertEquals(25, $y1->totalScore());
 
-    $y1->scoreFullHouse(dice(1), dice(2), dice(3), dice(4), dice(5)); // Should this throw?
+    $this->assertException(new Exception("Field has already been scored"), function() use ($y1) {
+      $y1->scoreFullHouse(dice(1), dice(2), dice(3), dice(4), dice(5));
+    });
     $this->assertEquals(25, $y1->totalScore());
 
     $y2 = $this->newScoreSheet('scoreFullHouse', dice(1), dice(2), dice(3), dice(4), dice(5));
     $this->assertEquals(0, $y2->totalScore());
 
-    $y2->scoreFullHouse(dice(6), dice(1), dice(6), dice(1), dice(6)); // Should this throw?
+    $this->assertException(new Exception("Field has already been scored"), function() use ($y2) {
+      $y2->scoreFullHouse(dice(6), dice(1), dice(6), dice(1), dice(6));
+    });
     $this->assertEquals(0, $y2->totalScore());
   }  
   
@@ -493,13 +532,17 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
     $y1 = $this->newScoreSheet('scoreSmallStraight', dice(6), dice(1), dice(2), dice(3), dice(4));
     $this->assertEquals(30, $y1->totalScore());
 
-    $y1->scoreSmallStraight(dice(1), dice(1), dice(1), dice(1), dice(1)); // Should this throw?
+    $this->assertException(new Exception("Field has already been scored"), function() use ($y1) {
+      $y1->scoreSmallStraight(dice(1), dice(1), dice(1), dice(1), dice(1));
+    });
     $this->assertEquals(30, $y1->totalScore());
 
     $y2 = $this->newScoreSheet('scoreSmallStraight', dice(1), dice(1), dice(1), dice(1), dice(1));
     $this->assertEquals(0, $y2->totalScore());
 
-    $y2->scoreSmallStraight(dice(6), dice(1), dice(2), dice(3), dice(4)); // Should this throw?
+    $this->assertException(new Exception("Field has already been scored"), function() use ($y2) {
+      $y2->scoreSmallStraight(dice(6), dice(1), dice(2), dice(3), dice(4));
+    });
     $this->assertEquals(0, $y2->totalScore());
   }  
 
@@ -536,13 +579,17 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
     $y1 = $this->newScoreSheet('scoreLargeStraight', dice(5), dice(1), dice(2), dice(3), dice(4));
     $this->assertEquals(40, $y1->totalScore());
 
-    $y1->scoreLargeStraight(dice(1), dice(1), dice(1), dice(1), dice(1)); // Should this throw?
+    $this->assertException(new Exception("Field has already been scored"), function() use ($y1) {
+      $y1->scoreLargeStraight(dice(1), dice(1), dice(1), dice(1), dice(1));
+    });
     $this->assertEquals(40, $y1->totalScore());
 
     $y2 = $this->newScoreSheet('scoreLargeStraight', dice(1), dice(1), dice(1), dice(1), dice(1));
     $this->assertEquals(0, $y2->totalScore());
 
-    $y2->scoreLargeStraight(dice(5), dice(1), dice(2), dice(3), dice(4)); // Should this throw?
+    $this->assertException(new Exception("Field has already been scored"), function() use ($y2) {
+      $y2->scoreLargeStraight(dice(5), dice(1), dice(2), dice(3), dice(4));
+    });
     $this->assertEquals(0, $y2->totalScore());
   }  
 
@@ -568,13 +615,17 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
     $y1 = $this->newScoreSheet('scoreYahtzee', dice(1), dice(1), dice(1), dice(1), dice(1));
     $this->assertEquals(50, $y1->totalScore());
 
-    $y1->scoreYahtzee(dice(1), dice(2), dice(3), dice(4), dice(5)); // Should this throw?
+    $this->assertException(new Exception("Field has already been scored"), function() use ($y1) {
+      $y1->scoreYahtzee(dice(1), dice(2), dice(3), dice(4), dice(5));
+    });
     $this->assertEquals(50, $y1->totalScore());
 
     $y2 = $this->newScoreSheet('scoreYahtzee', dice(1), dice(2), dice(3), dice(4), dice(5));
     $this->assertEquals(0, $y2->totalScore());
 
-    $y2->scoreYahtzee(dice(1), dice(1), dice(1), dice(1), dice(1)); // Should this throw?
+    $this->assertException(new Exception("Field has already been scored"), function() use ($y2) {
+      $y2->scoreYahtzee(dice(1), dice(1), dice(1), dice(1), dice(1));
+    });
     $this->assertEquals(0, $y2->totalScore());
   }  
 
@@ -591,7 +642,9 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
     $y1 = $this->newScoreSheet('scoreChance', dice(1), dice(1), dice(1), dice(1), dice(1));
     $this->assertEquals(5, $y1->totalScore());
 
-    $y1->scoreChance(dice(1), dice(2), dice(3), dice(4), dice(5)); // Should this throw?
+    $this->assertException(new Exception("Field has already been scored"), function() use ($y1) {
+      $y1->scoreChance(dice(1), dice(2), dice(3), dice(4), dice(5));
+    });
     $this->assertEquals(5, $y1->totalScore());
   }  
 
