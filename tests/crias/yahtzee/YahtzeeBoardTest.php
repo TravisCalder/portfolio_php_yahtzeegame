@@ -436,6 +436,72 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
     $y2->scoreFullHouse(dice(6), dice(1), dice(6), dice(1), dice(6)); // Should this throw?
     $this->assertEquals(0, $y2->totalScore());
   }  
+  
+  /* Small Straight */
+
+  public function testSmallStraight_shouldReturn0_whenThereAreNotFourNumbersInSequence() {
+    $this->assertEquals(0, $this->newScoreSheet('scoreSmallStraight', dice(1), dice(2), dice(3), dice(1), dice(1))->totalScore());
+    $this->assertEquals(0, $this->newScoreSheet('scoreSmallStraight', dice(1), dice(2), dice(4), dice(5), dice(6))->totalScore());
+    $this->assertEquals(0, $this->newScoreSheet('scoreSmallStraight', dice(1), dice(2), dice(3), dice(5), dice(6))->totalScore());
+    $this->assertEquals(0, $this->newScoreSheet('scoreSmallStraight', dice(1), dice(1), dice(1), dice(1), dice(1))->totalScore());
+  }
+  
+  public function testSmallStraight_shouldReturn30_whenThereAreFourNumbersInSequence() {
+    $this->assertEquals(30, $this->newScoreSheet('scoreSmallStraight', dice(1), dice(2), dice(3), dice(4), dice(1))->totalScore());
+    $this->assertEquals(30, $this->newScoreSheet('scoreSmallStraight', dice(1), dice(2), dice(3), dice(4), dice(2))->totalScore());
+    $this->assertEquals(30, $this->newScoreSheet('scoreSmallStraight', dice(1), dice(2), dice(3), dice(4), dice(3))->totalScore());
+    $this->assertEquals(30, $this->newScoreSheet('scoreSmallStraight', dice(1), dice(2), dice(3), dice(4), dice(4))->totalScore());
+    $this->assertEquals(30, $this->newScoreSheet('scoreSmallStraight', dice(1), dice(2), dice(3), dice(4), dice(5))->totalScore());
+    $this->assertEquals(30, $this->newScoreSheet('scoreSmallStraight', dice(1), dice(2), dice(3), dice(4), dice(6))->totalScore());
+    
+    $this->assertEquals(30, $this->newScoreSheet('scoreSmallStraight', dice(2), dice(3), dice(4), dice(5), dice(1))->totalScore());
+    $this->assertEquals(30, $this->newScoreSheet('scoreSmallStraight', dice(2), dice(3), dice(4), dice(5), dice(2))->totalScore());
+    $this->assertEquals(30, $this->newScoreSheet('scoreSmallStraight', dice(2), dice(3), dice(4), dice(5), dice(3))->totalScore());
+    $this->assertEquals(30, $this->newScoreSheet('scoreSmallStraight', dice(2), dice(3), dice(4), dice(5), dice(4))->totalScore());
+    $this->assertEquals(30, $this->newScoreSheet('scoreSmallStraight', dice(2), dice(3), dice(4), dice(5), dice(5))->totalScore());
+    $this->assertEquals(30, $this->newScoreSheet('scoreSmallStraight', dice(2), dice(3), dice(4), dice(5), dice(6))->totalScore());
+
+    $this->assertEquals(30, $this->newScoreSheet('scoreSmallStraight', dice(3), dice(4), dice(5), dice(6), dice(1))->totalScore());
+    $this->assertEquals(30, $this->newScoreSheet('scoreSmallStraight', dice(3), dice(4), dice(5), dice(6), dice(2))->totalScore());
+    $this->assertEquals(30, $this->newScoreSheet('scoreSmallStraight', dice(3), dice(4), dice(5), dice(6), dice(3))->totalScore());
+    $this->assertEquals(30, $this->newScoreSheet('scoreSmallStraight', dice(3), dice(4), dice(5), dice(6), dice(4))->totalScore());
+    $this->assertEquals(30, $this->newScoreSheet('scoreSmallStraight', dice(3), dice(4), dice(5), dice(6), dice(5))->totalScore());
+    $this->assertEquals(30, $this->newScoreSheet('scoreSmallStraight', dice(3), dice(4), dice(5), dice(6), dice(6))->totalScore());
+  }
+
+  public function testSmallStraight_orderDoesntMatter() {
+    $this->assertEquals(30, $this->newScoreSheet('scoreSmallStraight', dice(1), dice(2), dice(3), dice(4), dice(6))->totalScore());
+    $this->assertEquals(30, $this->newScoreSheet('scoreSmallStraight', dice(1), dice(2), dice(4), dice(3), dice(6))->totalScore());
+    $this->assertEquals(30, $this->newScoreSheet('scoreSmallStraight', dice(1), dice(4), dice(3), dice(2), dice(6))->totalScore());
+    $this->assertEquals(30, $this->newScoreSheet('scoreSmallStraight', dice(1), dice(4), dice(2), dice(3), dice(6))->totalScore());
+    $this->assertEquals(30, $this->newScoreSheet('scoreSmallStraight', dice(4), dice(3), dice(2), dice(1), dice(6))->totalScore());
+    
+    $this->assertEquals(30, $this->newScoreSheet('scoreSmallStraight', dice(6), dice(1), dice(2), dice(3), dice(4))->totalScore());
+    $this->assertEquals(30, $this->newScoreSheet('scoreSmallStraight', dice(6), dice(1), dice(2), dice(4), dice(3))->totalScore());
+    $this->assertEquals(30, $this->newScoreSheet('scoreSmallStraight', dice(6), dice(1), dice(4), dice(3), dice(2))->totalScore());
+    $this->assertEquals(30, $this->newScoreSheet('scoreSmallStraight', dice(6), dice(1), dice(4), dice(2), dice(3))->totalScore());
+    $this->assertEquals(30, $this->newScoreSheet('scoreSmallStraight', dice(6), dice(4), dice(3), dice(2), dice(1))->totalScore());
+
+    $this->assertEquals(30, $this->newScoreSheet('scoreSmallStraight', dice(1), dice(2), dice(3), dice(4), dice(6))->totalScore());
+    $this->assertEquals(30, $this->newScoreSheet('scoreSmallStraight', dice(1), dice(2), dice(3), dice(6), dice(4))->totalScore());
+    $this->assertEquals(30, $this->newScoreSheet('scoreSmallStraight', dice(1), dice(2), dice(6), dice(3), dice(4))->totalScore());
+    $this->assertEquals(30, $this->newScoreSheet('scoreSmallStraight', dice(1), dice(6), dice(2), dice(3), dice(4))->totalScore());
+    $this->assertEquals(30, $this->newScoreSheet('scoreSmallStraight', dice(6), dice(1), dice(2), dice(3), dice(4))->totalScore());
+  }
+  
+  public function testSmallStraight_cannotModifyValueAfterSet() {
+    $y1 = $this->newScoreSheet('scoreSmallStraight', dice(6), dice(1), dice(2), dice(3), dice(4));
+    $this->assertEquals(30, $y1->totalScore());
+
+    $y1->scoreFullHouse(dice(1), dice(1), dice(1), dice(1), dice(1)); // Should this throw?
+    $this->assertEquals(30, $y1->totalScore());
+
+    $y2 = $this->newScoreSheet('scoreFullHouse', dice(1), dice(1), dice(1), dice(1), dice(1));
+    $this->assertEquals(0, $y2->totalScore());
+
+    $y2->scoreFullHouse(dice(6), dice(1), dice(2), dice(3), dice(4)); // Should this throw?
+    $this->assertEquals(0, $y2->totalScore());
+  }  
 
   /* Helpers */
   
