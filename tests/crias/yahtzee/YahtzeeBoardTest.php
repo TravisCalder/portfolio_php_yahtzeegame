@@ -662,6 +662,18 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(155, $y->totalScore());
   }
 
+  public function testBonusYahtzee_canBePlayedInOnesColumn_withoutBonus_whenYahtzeeWasCrossedOut() {
+    $y = new YahtzeeBoard();
+    
+    $y->scoreYahtzee(dice(1), dice(2), dice(3), dice(4), dice(5));
+    $y->scoreOnes(dice(1), dice(1), dice(1), dice(1), dice(1));
+    
+    $this->assertEquals(5, $y->upperScore());
+    $this->assertEquals(0, $y->lowerScore());
+    $this->assertEquals(0, $y->yahtzeeBonus());
+    $this->assertEquals(5, $y->totalScore());
+  }
+
   public function testBonusYahtzee_canBePlayedInTwosColumn() {
     $y = new YahtzeeBoard();
     
@@ -672,6 +684,18 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(50, $y->lowerScore());
     $this->assertEquals(100, $y->yahtzeeBonus());
     $this->assertEquals(160, $y->totalScore());
+  }
+
+  public function testBonusYahtzee_canBePlayedInTwosColumn_withoutBonus_whenYahtzeeWasCrossedOut() {
+    $y = new YahtzeeBoard();
+    
+    $y->scoreYahtzee(dice(1), dice(2), dice(3), dice(4), dice(5));
+    $y->scoreTwos(dice(2), dice(2), dice(2), dice(2), dice(2));
+    
+    $this->assertEquals(10, $y->upperScore());
+    $this->assertEquals(0, $y->lowerScore());
+    $this->assertEquals(0, $y->yahtzeeBonus());
+    $this->assertEquals(10, $y->totalScore());
   }
 
   public function testBonusYahtzee_canBePlayedInThreesColumn() {
@@ -686,6 +710,18 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(165, $y->totalScore());
   }
 
+  public function testBonusYahtzee_canBePlayedInThreesColumn_withoutBonus_whenYahtzeeWasCrossedOut() {
+    $y = new YahtzeeBoard();
+    
+    $y->scoreYahtzee(dice(1), dice(2), dice(3), dice(4), dice(5));
+    $y->scoreThrees(dice(3), dice(3), dice(3), dice(3), dice(3));
+    
+    $this->assertEquals(15, $y->upperScore());
+    $this->assertEquals(0, $y->lowerScore());
+    $this->assertEquals(0, $y->yahtzeeBonus());
+    $this->assertEquals(15, $y->totalScore());
+  }
+
   public function testBonusYahtzee_canBePlayedInFoursColumn() {
     $y = new YahtzeeBoard();
     
@@ -696,6 +732,18 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(50, $y->lowerScore());
     $this->assertEquals(100, $y->yahtzeeBonus());
     $this->assertEquals(170, $y->totalScore());
+  }
+
+  public function testBonusYahtzee_canBePlayedInFoursColumn_withoutBonus_whenYahtzeeWasCrossedOut() {
+    $y = new YahtzeeBoard();
+    
+    $y->scoreYahtzee(dice(1), dice(2), dice(3), dice(4), dice(5));
+    $y->scoreFours(dice(4), dice(4), dice(4), dice(4), dice(4));
+    
+    $this->assertEquals(20, $y->upperScore());
+    $this->assertEquals(0, $y->lowerScore());
+    $this->assertEquals(0, $y->yahtzeeBonus());
+    $this->assertEquals(20, $y->totalScore());
   }
 
   public function testBonusYahtzee_canBePlayedInFivesColumn() {
@@ -710,6 +758,18 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(175, $y->totalScore());
   }
 
+  public function testBonusYahtzee_canBePlayedInFivesColumn_withoutBonus_whenYahtzeeWasCrossedOut() {
+    $y = new YahtzeeBoard();
+    
+    $y->scoreYahtzee(dice(1), dice(2), dice(3), dice(4), dice(5));
+    $y->scoreFives(dice(5), dice(5), dice(5), dice(5), dice(5));
+    
+    $this->assertEquals(25, $y->upperScore());
+    $this->assertEquals(0, $y->lowerScore());
+    $this->assertEquals(0, $y->yahtzeeBonus());
+    $this->assertEquals(25, $y->totalScore());
+  }
+
   public function testBonusYahtzee_canBePlayedInSixesColumn() {
     $y = new YahtzeeBoard();
     
@@ -720,6 +780,18 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(50, $y->lowerScore());
     $this->assertEquals(100, $y->yahtzeeBonus());
     $this->assertEquals(180, $y->totalScore());
+  }
+
+  public function testBonusYahtzee_canBePlayedInSixesColumn_withoutBonus_whenYahtzeeWasCrossedOut() {
+    $y = new YahtzeeBoard();
+    
+    $y->scoreYahtzee(dice(1), dice(2), dice(3), dice(4), dice(5));
+    $y->scoreSixes(dice(6), dice(6), dice(6), dice(6), dice(6));
+    
+    $this->assertEquals(30, $y->upperScore());
+    $this->assertEquals(0, $y->lowerScore());
+    $this->assertEquals(0, $y->yahtzeeBonus());
+    $this->assertEquals(30, $y->totalScore());
   }
 
   public function testBonusYahtzee_canBePlayedInThreeOfAKindColumn() {
@@ -734,6 +806,18 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(180, $y->totalScore());
   }
 
+  public function testBonusYahtzee_canBePlayedInThreeOfAKindColumn_withoutBonus_whenYahtzeeWasCrossedOut() {
+    $y = new YahtzeeBoard();
+    
+    $y->scoreYahtzee(dice(1), dice(2), dice(3), dice(4), dice(5));
+    $y->scoreThreeOfAKind(dice(6), dice(6), dice(6), dice(6), dice(6));
+    
+    $this->assertEquals(0, $y->upperScore());
+    $this->assertEquals(30, $y->lowerScore());
+    $this->assertEquals(0, $y->yahtzeeBonus());
+    $this->assertEquals(30, $y->totalScore());
+  }
+
   public function testBonusYahtzee_canBePlayedInFourOfAKindColumn() {
     $y = new YahtzeeBoard();
     
@@ -744,6 +828,18 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(80, $y->lowerScore());
     $this->assertEquals(100, $y->yahtzeeBonus());
     $this->assertEquals(180, $y->totalScore());
+  }
+
+  public function testBonusYahtzee_canBePlayedInFourOfAKindColumn_withoutBonus_whenYahtzeeWasCrossedOut() {
+    $y = new YahtzeeBoard();
+    
+    $y->scoreYahtzee(dice(1), dice(2), dice(3), dice(4), dice(5));
+    $y->scoreFourOfAKind(dice(6), dice(6), dice(6), dice(6), dice(6));
+    
+    $this->assertEquals(0, $y->upperScore());
+    $this->assertEquals(30, $y->lowerScore());
+    $this->assertEquals(0, $y->yahtzeeBonus());
+    $this->assertEquals(30, $y->totalScore());
   }
 
   public function testBonusYahtzee_canBePlayedInFullHouseColumn() {
@@ -758,6 +854,44 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(150, $y->totalScore());
   }
 
+  public function testBonusYahtzee_canBePlayedInFullHouseColumn_withoutBonus_whenYahtzeeWasCrossedOut() {
+    $y = new YahtzeeBoard();
+    
+    $y->scoreYahtzee(dice(1), dice(2), dice(3), dice(4), dice(5));
+    $y->scoreFullHouse(dice(6), dice(6), dice(6), dice(6), dice(6));
+    
+    $this->assertEquals(0, $y->upperScore());
+    $this->assertEquals(0, $y->lowerScore());
+    $this->assertEquals(0, $y->yahtzeeBonus());
+    $this->assertEquals(0, $y->totalScore());
+  }
+
+  public function testBonusYahtzee_canBePlayedInFullHouseColumn_andScoreFullHouse_whenAppropriateUpperFieldIsFilled() {
+    $y = new YahtzeeBoard();
+    
+    $y->scoreSixes(dice(1), dice(2), dice(3), dice(4), dice(5));
+    $y->scoreYahtzee(dice(6), dice(6), dice(6), dice(6), dice(6));
+    $y->scoreFullHouse(dice(6), dice(6), dice(6), dice(6), dice(6));
+    
+    $this->assertEquals(0, $y->upperScore());
+    $this->assertEquals(75, $y->lowerScore());
+    $this->assertEquals(100, $y->yahtzeeBonus());
+    $this->assertEquals(175, $y->totalScore());
+  }
+
+  public function testBonusYahtzee_canBePlayedInFullHouseColumn_withoutBonus_andScoreFullHouse_whenYahtzeeWasCrossedOut_whenAppropriateUpperFieldIsFilled() {
+    $y = new YahtzeeBoard();
+    
+    $y->scoreFives(dice(1), dice(2), dice(3), dice(4), dice(6));
+    $y->scoreYahtzee(dice(1), dice(2), dice(3), dice(4), dice(5));
+    $y->scoreFullHouse(dice(5), dice(5), dice(5), dice(5), dice(5));
+    
+    $this->assertEquals(0, $y->upperScore());
+    $this->assertEquals(25, $y->lowerScore());
+    $this->assertEquals(0, $y->yahtzeeBonus());
+    $this->assertEquals(25, $y->totalScore());
+  }
+
   public function testBonusYahtzee_canBePlayedInSmallStraightColumn() {
     $y = new YahtzeeBoard();
     
@@ -770,6 +904,44 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(150, $y->totalScore());
   }
 
+  public function testBonusYahtzee_canBePlayedInSmallStraightColumn_withoutBonus_whenYahtzeeWasCrossedOut() {
+    $y = new YahtzeeBoard();
+    
+    $y->scoreYahtzee(dice(1), dice(2), dice(3), dice(4), dice(5));
+    $y->scoreSmallStraight(dice(6), dice(6), dice(6), dice(6), dice(6));
+    
+    $this->assertEquals(0, $y->upperScore());
+    $this->assertEquals(0, $y->lowerScore());
+    $this->assertEquals(0, $y->yahtzeeBonus());
+    $this->assertEquals(0, $y->totalScore());
+  }
+
+  public function testBonusYahtzee_canBePlayedInSmallStraightColumn_andScoreSmallStraight_whenAppropriateUpperFieldIsFilled() {
+    $y = new YahtzeeBoard();
+    
+    $y->scoreOnes(dice(6), dice(2), dice(3), dice(4), dice(5));
+    $y->scoreYahtzee(dice(6), dice(6), dice(6), dice(6), dice(6));
+    $y->scoreSmallStraight(dice(1), dice(1), dice(1), dice(1), dice(1));
+    
+    $this->assertEquals(0, $y->upperScore());
+    $this->assertEquals(80, $y->lowerScore());
+    $this->assertEquals(100, $y->yahtzeeBonus());
+    $this->assertEquals(180, $y->totalScore());
+  }
+
+  public function testBonusYahtzee_canBePlayedInSmallStraightColumn_withoutBonus_andScoreSmallStraight_whenYahtzeeWasCrossedOut_whenAppropriateUpperFieldIsFilled() {
+    $y = new YahtzeeBoard();
+    
+    $y->scoreTwos(dice(6), dice(1), dice(3), dice(4), dice(5));
+    $y->scoreYahtzee(dice(1), dice(2), dice(3), dice(4), dice(5));
+    $y->scoreSmallStraight(dice(2), dice(2), dice(2), dice(2), dice(2));
+    
+    $this->assertEquals(0, $y->upperScore());
+    $this->assertEquals(30, $y->lowerScore());
+    $this->assertEquals(0, $y->yahtzeeBonus());
+    $this->assertEquals(30, $y->totalScore());
+  }
+  
   public function testBonusYahtzee_canBePlayedInLargeStraightColumn() {
     $y = new YahtzeeBoard();
     
@@ -782,6 +954,44 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(150, $y->totalScore());
   }
 
+  public function testBonusYahtzee_canBePlayedInLargeStraightColumn_withoutBonus_whenYahtzeeWasCrossedOut() {
+    $y = new YahtzeeBoard();
+    
+    $y->scoreYahtzee(dice(1), dice(2), dice(3), dice(4), dice(5));
+    $y->scoreLargeStraight(dice(6), dice(6), dice(6), dice(6), dice(6));
+    
+    $this->assertEquals(0, $y->upperScore());
+    $this->assertEquals(0, $y->lowerScore());
+    $this->assertEquals(0, $y->yahtzeeBonus());
+    $this->assertEquals(0, $y->totalScore());
+  }
+
+  public function testBonusYahtzee_canBePlayedInLargeStraightColumn_andScoreLargeStraight_whenAppropriateUpperFieldIsFilled() {
+    $y = new YahtzeeBoard();
+    
+    $y->scoreThrees(dice(1), dice(2), dice(6), dice(4), dice(5));
+    $y->scoreYahtzee(dice(6), dice(6), dice(6), dice(6), dice(6));
+    $y->scoreLargeStraight(dice(3), dice(3), dice(3), dice(3), dice(3));
+    
+    $this->assertEquals(0, $y->upperScore());
+    $this->assertEquals(90, $y->lowerScore());
+    $this->assertEquals(100, $y->yahtzeeBonus());
+    $this->assertEquals(190, $y->totalScore());
+  }
+
+  public function testBonusYahtzee_canBePlayedInLargeStraightColumn_withoutBonus_andScoreLargeStraight_whenYahtzeeWasCrossedOut_whenAppropriateUpperFieldIsFilled() {
+    $y = new YahtzeeBoard();
+    
+    $y->scoreFours(dice(1), dice(2), dice(6), dice(3), dice(5));
+    $y->scoreYahtzee(dice(1), dice(2), dice(3), dice(4), dice(5));
+    $y->scoreLargeStraight(dice(4), dice(4), dice(4), dice(4), dice(4));
+    
+    $this->assertEquals(0, $y->upperScore());
+    $this->assertEquals(40, $y->lowerScore());
+    $this->assertEquals(0, $y->yahtzeeBonus());
+    $this->assertEquals(40, $y->totalScore());
+  }
+
   public function testBonusYahtzee_canBePlayedInChanceColumn() {
     $y = new YahtzeeBoard();
     
@@ -792,6 +1002,18 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(80, $y->lowerScore());
     $this->assertEquals(100, $y->yahtzeeBonus());
     $this->assertEquals(180, $y->totalScore());
+  }
+
+  public function testBonusYahtzee_canBePlayedInChanceColumn_withoutBonus_whenYahtzeeWasCrossedOut() {
+    $y = new YahtzeeBoard();
+    
+    $y->scoreYahtzee(dice(1), dice(2), dice(4), dice(6), dice(6));
+    $y->scoreChance(dice(6), dice(6), dice(6), dice(6), dice(6));
+    
+    $this->assertEquals(0, $y->upperScore());
+    $this->assertEquals(30, $y->lowerScore());
+    $this->assertEquals(0, $y->yahtzeeBonus());
+    $this->assertEquals(30, $y->totalScore());
   }
   
   /* Helpers */

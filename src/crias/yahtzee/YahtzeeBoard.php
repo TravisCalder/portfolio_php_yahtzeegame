@@ -130,19 +130,15 @@ class YahtzeeBoard {
     $dice = [$first, $second, $third, $fourth, $fifth];
     $values = $this->diceValues($dice);
     
-    $this->scoreField('fullHouse',
-      (sizeof(array_intersect([2, 3], array_count_values($values))) == 2) ? 25 : 0
-    );
+    $this->scoreField('fullHouse', ($this->isFullHouse($values) || $this->jokerYahtzeeApplies($values)) ? 25 : 0);
     $this->scoreBonusYahtzeeIfApplicable($dice);
   }
-
+  
   public function scoreSmallStraight(Dice $first, Dice $second, Dice $third, Dice $fourth, Dice $fifth) {
     $dice = [$first, $second, $third, $fourth, $fifth];
     $values = $this->diceValues($dice);
 
-    $this->scoreField('smallStraight',
-      ($this->containsRange(1, 4, $values) || $this->containsRange(2, 5, $values) || $this->containsRange(3, 6, $values)) ? 30 : 0
-    );
+    $this->scoreField('smallStraight', ($this->isSmallStraight($values) || $this->jokerYahtzeeApplies($values)) ? 30 : 0);
     $this->scoreBonusYahtzeeIfApplicable($dice);
   }
 
@@ -150,18 +146,13 @@ class YahtzeeBoard {
     $dice = [$first, $second, $third, $fourth, $fifth];
     $values = $this->diceValues($dice);
 
-    $this->scoreField('largeStraight',
-      ($this->containsRange(1, 5, $values) || $this->containsRange(2, 6, $values)) ? 40 : 0
-    );
+    $this->scoreField('largeStraight', ($this->isLargeStraight($values) || $this->jokerYahtzeeApplies($values)) ? 40 : 0);
     $this->scoreBonusYahtzeeIfApplicable($dice);
   }
 
   public function scoreYahtzee(Dice $first, Dice $second, Dice $third, Dice $fourth, Dice $fifth) {
     $values = $this->diceValues([$first, $second, $third, $fourth, $fifth]);
-    
-    $this->scoreField('yahtzee',
-      (sizeof(array_intersect([5], array_count_values($values))) > 0) ? 50 : 0
-    );
+    $this->scoreField('yahtzee', ($this->isYahtzee($values)) ? 50 : 0);
   }
 
   public function scoreChance(Dice $first, Dice $second, Dice $third, Dice $fourth, Dice $fifth) {
@@ -180,10 +171,31 @@ class YahtzeeBoard {
     }
   }
   
+  private function jokerYahtzeeApplies($values) {
+    $upperField = [1 => $this->ones, 2 => $this->twos, 3 => $this->threes, 4 => $this->fours, 5 => $this->fives, 6 => $this->sixes];
+    return $this->isYahtzee($values) && $upperField[$values[0]]->isDefined();
+  }
+  
+  private function isFullHouse($values) {
+    return sizeof(array_intersect([2, 3], array_count_values($values))) == 2;
+  }
+  
+  private function isSmallStraight($values) {
+    return $this->containsRange(1, 4, $values) || $this->containsRange(2, 5, $values) || $this->containsRange(3, 6, $values);
+  }
+  
+  private function isLargeStraight($values) {
+    return $this->containsRange(1, 5, $values) || $this->containsRange(2, 6, $values);
+  }
+
+  private function isYahtzee($values) {
+    return sizeof(array_intersect([5], array_count_values($values))) > 0;
+  }
+
   private function scoreBonusYahtzeeIfApplicable(array $dice) {
     $values = $this->diceValues($dice);
     
-    if($this->yahtzee->isDefined()) {
+    if($this->yahtzee->getOrElse(0) == 50) {
       $this->yahtzeeBonusCount += (sizeof(array_intersect([5], array_count_values($values))) > 0) ? 1 : 0;
     }
   }
