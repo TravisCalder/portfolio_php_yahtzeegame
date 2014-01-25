@@ -578,6 +578,23 @@ class YahtzeeBoardTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(0, $y2->totalScore());
   }  
 
+  /* Chance */
+
+  public function testChance_shouldReturnSumOfValues() {
+    $this->assertEquals(8, $this->newScoreSheet('scoreChance', dice(1), dice(2), dice(3), dice(1), dice(1))->totalScore());
+    $this->assertEquals(10, $this->newScoreSheet('scoreChance', dice(1), dice(1), dice(1), dice(1), dice(6))->totalScore());
+    $this->assertEquals(17, $this->newScoreSheet('scoreChance', dice(1), dice(2), dice(3), dice(5), dice(6))->totalScore());
+    $this->assertEquals(15, $this->newScoreSheet('scoreChance', dice(1), dice(2), dice(3), dice(4), dice(5))->totalScore());
+  }
+
+  public function testChance_cannotModifyValueAfterSet() {
+    $y1 = $this->newScoreSheet('scoreChance', dice(1), dice(1), dice(1), dice(1), dice(1));
+    $this->assertEquals(5, $y1->totalScore());
+
+    $y1->scoreChance(dice(1), dice(2), dice(3), dice(4), dice(5)); // Should this throw?
+    $this->assertEquals(5, $y1->totalScore());
+  }  
+
   /* Helpers */
   
   private function newScoreSheet($scoreMethod, Dice $first, Dice $second, Dice $third, Dice $fourth, Dice $fifth) {
