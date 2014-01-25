@@ -4,7 +4,7 @@ use Exception;
 use crias\Some;
 use crias\None;
 
-class YahtzeeBoard {
+class YahtzeeScoreSheet {
   private $ones;
   private $twos;
   private $threes;
