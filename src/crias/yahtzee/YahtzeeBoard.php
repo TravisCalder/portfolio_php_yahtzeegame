@@ -107,44 +107,53 @@ class YahtzeeBoard {
   }
 
   public function scoreThreeOfAKind(Dice $first, Dice $second, Dice $third, Dice $fourth, Dice $fifth) {
-    $values = $this->diceValues([$first, $second, $third, $fourth, $fifth]);
-    
+    $dice = [$first, $second, $third, $fourth, $fifth];
+    $values = $this->diceValues($dice);
     
     $this->scoreField('threeOfAKind',
       (sizeof(array_intersect([3, 4, 5], array_count_values($values))) > 0) ? array_sum($values) : 0
     );
+    $this->scoreBonusYahtzeeIfApplicable($dice);
   }
 
   public function scoreFourOfAKind(Dice $first, Dice $second, Dice $third, Dice $fourth, Dice $fifth) {
-    $values = $this->diceValues([$first, $second, $third, $fourth, $fifth]);
+    $dice = [$first, $second, $third, $fourth, $fifth];
+    $values = $this->diceValues($dice);
     
     $this->scoreField('fourOfAKind',
       (sizeof(array_intersect([4, 5], array_count_values($values))) > 0) ? array_sum($values) : 0
     );
+    $this->scoreBonusYahtzeeIfApplicable($dice);
   }
 
   public function scoreFullHouse(Dice $first, Dice $second, Dice $third, Dice $fourth, Dice $fifth) {
-    $values = $this->diceValues([$first, $second, $third, $fourth, $fifth]);
+    $dice = [$first, $second, $third, $fourth, $fifth];
+    $values = $this->diceValues($dice);
     
     $this->scoreField('fullHouse',
       (sizeof(array_intersect([2, 3], array_count_values($values))) == 2) ? 25 : 0
     );
+    $this->scoreBonusYahtzeeIfApplicable($dice);
   }
 
   public function scoreSmallStraight(Dice $first, Dice $second, Dice $third, Dice $fourth, Dice $fifth) {
-    $values = $this->diceValues([$first, $second, $third, $fourth, $fifth]);
+    $dice = [$first, $second, $third, $fourth, $fifth];
+    $values = $this->diceValues($dice);
 
     $this->scoreField('smallStraight',
       ($this->containsRange(1, 4, $values) || $this->containsRange(2, 5, $values) || $this->containsRange(3, 6, $values)) ? 30 : 0
     );
+    $this->scoreBonusYahtzeeIfApplicable($dice);
   }
 
   public function scoreLargeStraight(Dice $first, Dice $second, Dice $third, Dice $fourth, Dice $fifth) {
-    $values = $this->diceValues([$first, $second, $third, $fourth, $fifth]);
+    $dice = [$first, $second, $third, $fourth, $fifth];
+    $values = $this->diceValues($dice);
 
     $this->scoreField('largeStraight',
       ($this->containsRange(1, 5, $values) || $this->containsRange(2, 6, $values)) ? 40 : 0
     );
+    $this->scoreBonusYahtzeeIfApplicable($dice);
   }
 
   public function scoreYahtzee(Dice $first, Dice $second, Dice $third, Dice $fourth, Dice $fifth) {
@@ -156,9 +165,11 @@ class YahtzeeBoard {
   }
 
   public function scoreChance(Dice $first, Dice $second, Dice $third, Dice $fourth, Dice $fifth) {
-    $values = $this->diceValues([$first, $second, $third, $fourth, $fifth]);
+    $dice = [$first, $second, $third, $fourth, $fifth];
+    $values = $this->diceValues($dice);
 
     $this->scoreField('chance', array_sum($values));
+    $this->scoreBonusYahtzeeIfApplicable($dice);
   }
   
   private function scoreField($field, $value) {
