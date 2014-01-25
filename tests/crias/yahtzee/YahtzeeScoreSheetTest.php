@@ -1070,8 +1070,98 @@ class YahtzeeScoreSheetTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(5, $y->totalScore());  
   }  
   
-  /* Helpers */
+  /* isFilled methods for easier UI */
   
+  public function isFilled_shouldReturnTrue_whenFieldIsFilled() {
+    $y = new YahtzeeScoreSheet();
+    $this->assertNoneAreFilled($y);
+    $y->scoreOnes(dice(1), dice(2), dice(3), dice(1), dice(1));
+    $this->assertOnlyOneIsFilled($y, 'ones');
+
+    $y = new YahtzeeScoreSheet();
+    $this->assertNoneAreFilled($y);
+    $y->scoreTwos(dice(1), dice(2), dice(3), dice(1), dice(1));
+    $this->assertOnlyOneIsFilled($y, 'twos');
+
+    $y = new YahtzeeScoreSheet();
+    $this->assertNoneAreFilled($y);
+    $y->scoreThrees(dice(1), dice(2), dice(3), dice(1), dice(1));
+    $this->assertOnlyOneIsFilled($y, 'threes');
+
+    $y = new YahtzeeScoreSheet();
+    $this->assertNoneAreFilled($y);
+    $y->scoreFours(dice(1), dice(2), dice(3), dice(1), dice(1));
+    $this->assertOnlyOneIsFilled($y, 'fours');
+
+    $y = new YahtzeeScoreSheet();
+    $this->assertNoneAreFilled($y);
+    $y->scoreFive(dice(1), dice(2), dice(3), dice(1), dice(1));
+    $this->assertOnlyOneIsFilled($y, 'fives');
+
+    $y = new YahtzeeScoreSheet();
+    $this->assertNoneAreFilled($y);
+    $y->scoreSixes(dice(1), dice(2), dice(3), dice(1), dice(1));
+    $this->assertOnlyOneIsFilled($y, 'sixes');
+
+    $y = new YahtzeeScoreSheet();
+    $this->assertNoneAreFilled($y);
+    $y->scoreThreeOfAKind(dice(1), dice(2), dice(3), dice(1), dice(1));
+    $this->assertOnlyOneIsFilled($y, 'threeOfAKind');
+
+    $y = new YahtzeeScoreSheet();
+    $this->assertNoneAreFilled($y);
+    $y->scoreFourOfAKind(dice(1), dice(2), dice(3), dice(1), dice(1));
+    $this->assertOnlyOneIsFilled($y, 'fourOfAKind');
+
+    $y = new YahtzeeScoreSheet();
+    $this->assertNoneAreFilled($y);
+    $y->scoreFullHous(dice(1), dice(2), dice(3), dice(1), dice(1));
+    $this->assertOnlyOneIsFilled($y, 'fullHouse');
+
+    $y = new YahtzeeScoreSheet();
+    $this->assertNoneAreFilled($y);
+    $y->scoreSmallStraight(dice(1), dice(2), dice(3), dice(1), dice(1));
+    $this->assertOnlyOneIsFilled($y, 'smallStraight');
+
+    $y = new YahtzeeScoreSheet();
+    $this->assertNoneAreFilled($y);
+    $y->scoreLargeStraight(dice(1), dice(2), dice(3), dice(1), dice(1));
+    $this->assertOnlyOneIsFilled($y, 'largeStraight');
+
+    $y = new YahtzeeScoreSheet();
+    $this->assertNoneAreFilled($y);
+    $y->scoreChance(dice(1), dice(2), dice(3), dice(1), dice(1));
+    $this->assertOnlyOneIsFilled($y, 'chance');
+
+    $y = new YahtzeeScoreSheet();
+    $this->assertNoneAreFilled($y);
+    $y->scoreYahtzee(dice(1), dice(2), dice(3), dice(1), dice(1));
+    $this->assertOnlyOneIsFilled($y, 'yahtzee');
+  }
+  
+  /* Helpers */
+  private $upperFields = ['ones', 'twos', 'threes', 'fours', 'fives', 'sixes'];
+  private $lowerFields = ['threeOfAKind', 'fourOfAKind', 'fullHouse', 'smallStraight', 'largeStraight', 'yahtzee', 'chance'];
+
+  private function assertNoneAreFilled(YahtzeeScoreBoard $y) {
+    foreach($upperFields as $field) {
+      $this->assertEquals(false, $y->isFilled($field));
+    }
+    foreach($lowerFields as $field) {
+      $this->assertEquals(false, $y->isFilled($field));
+    }
+  }
+  
+  private function assertOnlyOneIsFilled(YahtzeeScoreBoard $y, $filledField) {
+    $this->assertEquals(true, $y->isFilled($filledField));
+    foreach($upperFields as $field) {
+      if($field != $filledField) $this->assertEquals(false, $y->isFilled($field));
+    }
+    foreach($lowerFields as $field) {
+      if($field != $filledField) $this->assertEquals(false, $y->isFilled($field));
+    }
+  }
+
   private function newScoreSheet($scoreMethod, Dice $first, Dice $second, Dice $third, Dice $fourth, Dice $fifth) {
     $y = new YahtzeeScoreSheet();
     $y->$scoreMethod($first, $second, $third, $fourth, $fifth);

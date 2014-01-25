@@ -38,7 +38,7 @@ class YahtzeeScoreSheet {
     $this->chance = new None;
     $this->yahtzeeBonusCount = 0;
   }
-
+  
   public function totalScore() {
     return $this->upperScore() + $this->bonus() + $this->lowerScore() + $this->yahtzeeBonus();
   }
@@ -68,6 +68,10 @@ class YahtzeeScoreSheet {
   
   public function bonus() {
     return ($this->upperScore() >= 63) ? 35 : 0;
+  }
+
+  public function isFilled($filledField) {
+    return $this->$filledField->isDefined();
   }
 
   public function scoreOnes(Dice $first, Dice $second, Dice $third, Dice $fourth, Dice $fifth) {
