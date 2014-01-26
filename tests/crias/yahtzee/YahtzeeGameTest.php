@@ -370,6 +370,69 @@ class YahtzeeGameTest extends PHPUnit_Framework_TestCase {
     });
   }
 
+  public function testEndTurn_whenTurnHasNotBeenScored_throwsException() {
+    $y = new YahtzeeGame(1);
+    $y->roll([]);
+    
+    $this->assertException(new Exception("This turn has not been scored yet. Please score before ending turn."), function() use ($y) {
+      $y->endTurn();
+    });
+  }
+
+  public function testEndTurn_movesToTheNextPlayer_whenMultiplePlayers() {
+    $y = new YahtzeeGame(3);
+    $this->assertEquals(1, $y->currentPlayer());
+    $this->assertEquals([], $y->currentDice());
+
+    $y->roll([]);
+    $y->scoreCurrentDice('chance');
+    $y->endTurn();
+    $this->assertEquals(2, $y->currentPlayer());
+    $this->assertEquals(3, $y->rollsRemaining());
+    $this->assertEquals([], $y->currentDice());
+
+    $y->roll([]);
+    $y->scoreCurrentDice('chance');
+    $y->endTurn();
+    $this->assertEquals(3, $y->currentPlayer());
+    $this->assertEquals(3, $y->rollsRemaining());
+    $this->assertEquals([], $y->currentDice());
+
+    $y->roll([]);
+    $y->scoreCurrentDice('chance');
+    $y->endTurn();
+    $this->assertEquals(1, $y->currentPlayer());
+    $this->assertEquals(3, $y->rollsRemaining());
+    $this->assertEquals([], $y->currentDice());
+  }
+  
+  public function testEndTurn_staysOnPlayerOne_andStartsTheNextTurn_whenOnlyOnePlayer() {
+    $y = new YahtzeeGame(1);
+    $this->assertEquals(1, $y->currentPlayer());
+    $this->assertEquals([], $y->currentDice());
+
+    $y->roll([]);
+    $y->scoreCurrentDice('chance');
+    $y->endTurn();
+    $this->assertEquals(1, $y->currentPlayer());
+    $this->assertEquals(3, $y->rollsRemaining());
+    $this->assertEquals([], $y->currentDice());
+
+    $y->roll([]);
+    $y->scoreCurrentDice('fullHouse');
+    $y->endTurn();
+    $this->assertEquals(1, $y->currentPlayer());
+    $this->assertEquals(3, $y->rollsRemaining());
+    $this->assertEquals([], $y->currentDice());
+
+    $y->roll([]);
+    $y->scoreCurrentDice('yahtzee');
+    $y->endTurn();
+    $this->assertEquals(1, $y->currentPlayer());
+    $this->assertEquals(3, $y->rollsRemaining());
+    $this->assertEquals([], $y->currentDice());
+  }
+
   private function assertValidRoll($roll) {
     $this->assertGreaterThanOrEqual(1, $roll);
     $this->assertLessThanOrEqual(6, $roll);

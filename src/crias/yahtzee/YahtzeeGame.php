@@ -112,6 +112,7 @@ class YahtzeeGame {
   }
   
   public function endTurn() {
+    $this->ensureTurnIsScored();
     if($this->_currentPlayer == $this->_numberOfPlayers)
       $this->_currentPlayer = 1;
     else
@@ -121,6 +122,11 @@ class YahtzeeGame {
     $this->_rollsRemaining = 3;
     $this->_currentDice = [];
     $this->_scoredThisTurn = false;
+  }
+
+  private function ensureTurnIsScored() {
+    if(!$this->_scoredThisTurn)
+      throw new Exception("This turn has not been scored yet. Please score before ending turn.");
   }
 
   private function ensureTurnNotAlreadyScored($message) {
@@ -147,6 +153,4 @@ class YahtzeeGame {
     if($this->_rollsRemaining == 0)
       throw new Exception("No rolls remaining, cannot roll. Please score your dice.");
   }
-
-
 }
