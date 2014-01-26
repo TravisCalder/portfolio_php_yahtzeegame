@@ -17,8 +17,9 @@ if(!function_exists('readChoice')) {
     return $number;
   }
   
-  function presentChoices(array $choices) {
+  function presentChoices($choiceText, array $choices) {
     // One-indexed for player ease
+    outPrintLn($choiceText);
     for($i = 0; $i < sizeof($choices); $i++) {
       $choiceCount = $i + 1;
       outPrintLn("\t${choiceCount}. " . $choices[$i]);
