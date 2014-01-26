@@ -163,7 +163,212 @@ class YahtzeeGameTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(false, $foundDifferent[3]);
     $this->assertEquals(false, $foundDifferent[4]);
   }
+  
+  public function testCurrentPlayerScoringOptions_shouldReturnAllOptions_whenNothingHasBeenScored() {
+    $y = new YahtzeeGame(1);
+    $this->assertContains('ones', $y->currentPlayerScoringOptions());
+    $this->assertContains('twos', $y->currentPlayerScoringOptions());
+    $this->assertContains('threes', $y->currentPlayerScoringOptions());
+    $this->assertContains('fours', $y->currentPlayerScoringOptions());
+    $this->assertContains('fives', $y->currentPlayerScoringOptions());
+    $this->assertContains('sixes', $y->currentPlayerScoringOptions());
+    $this->assertContains('threeOfAKind', $y->currentPlayerScoringOptions());
+    $this->assertContains('fourOfAKind', $y->currentPlayerScoringOptions());
+    $this->assertContains('fullHouse', $y->currentPlayerScoringOptions());
+    $this->assertContains('smallStraight', $y->currentPlayerScoringOptions());
+    $this->assertContains('largeStraight', $y->currentPlayerScoringOptions());
+    $this->assertContains('yahtzee', $y->currentPlayerScoringOptions());
+    $this->assertContains('chance', $y->currentPlayerScoringOptions());
+  }
 
+  public function testCurrentPlayerScoringOptions_shouldNotReturnOnes_whenTheyHaveBeenScored() {
+    $y = new YahtzeeGame(1);
+    $y->roll([]);
+    
+    $before = $y->currentPlayerScoringOptions();
+    $y->scoreCurrentDice('ones');
+    $after = $y->currentPlayerScoringOptions();
+    $this->assertEquals(13, sizeof($before));
+    $this->assertEquals(12, sizeof($after));
+    $this->assertEquals(['ones'], array_values(array_diff($before, $after)));
+  }
+
+  public function testCurrentPlayerScoringOptions_shouldNotReturnTwos_whenTheyHaveBeenScored() {
+    $y = new YahtzeeGame(1);
+    $y->roll([]);
+    
+    $before = $y->currentPlayerScoringOptions();
+    $y->scoreCurrentDice('twos');
+    $after = $y->currentPlayerScoringOptions();
+    $this->assertEquals(13, sizeof($before));
+    $this->assertEquals(12, sizeof($after));
+    $this->assertEquals(['twos'], array_values(array_diff($before, $after)));
+  }
+
+  public function testCurrentPlayerScoringOptions_shouldNotReturnThrees_whenTheyHaveBeenScored() {
+    $y = new YahtzeeGame(1);
+    $y->roll([]);
+    
+    $before = $y->currentPlayerScoringOptions();
+    $y->scoreCurrentDice('threes');
+    $after = $y->currentPlayerScoringOptions();
+    $this->assertEquals(13, sizeof($before));
+    $this->assertEquals(12, sizeof($after));
+    $this->assertEquals(['threes'], array_values(array_diff($before, $after)));
+  }
+
+  public function testCurrentPlayerScoringOptions_shouldNotReturnFours_whenTheyHaveBeenScored() {
+    $y = new YahtzeeGame(1);
+    $y->roll([]);
+    
+    $before = $y->currentPlayerScoringOptions();
+    $y->scoreCurrentDice('fours');
+    $after = $y->currentPlayerScoringOptions();
+    $this->assertEquals(13, sizeof($before));
+    $this->assertEquals(12, sizeof($after));
+    $this->assertEquals(['fours'], array_values(array_diff($before, $after)));
+  }
+  
+  public function testCurrentPlayerScoringOptions_shouldNotReturnFives_whenTheyHaveBeenScored() {
+    $y = new YahtzeeGame(1);
+    $y->roll([]);
+    
+    $before = $y->currentPlayerScoringOptions();
+    $y->scoreCurrentDice('fives');
+    $after = $y->currentPlayerScoringOptions();
+    $this->assertEquals(13, sizeof($before));
+    $this->assertEquals(12, sizeof($after));
+    $this->assertEquals(['fives'], array_values(array_diff($before, $after)));
+  }
+
+  public function testCurrentPlayerScoringOptions_shouldNotReturnSixes_whenTheyHaveBeenScored() {
+    $y = new YahtzeeGame(1);
+    $y->roll([]);
+    
+    $before = $y->currentPlayerScoringOptions();
+    $y->scoreCurrentDice('sixes');
+    $after = $y->currentPlayerScoringOptions();
+    $this->assertEquals(13, sizeof($before));
+    $this->assertEquals(12, sizeof($after));
+    $this->assertEquals(['sixes'], array_values(array_diff($before, $after)));
+  }
+
+  public function testCurrentPlayerScoringOptions_shouldNotReturnThreeOfAKind_whenTheyHaveBeenScored() {
+    $y = new YahtzeeGame(1);
+    $y->roll([]);
+    
+    $before = $y->currentPlayerScoringOptions();
+    $y->scoreCurrentDice('threeOfAKind');
+    $after = $y->currentPlayerScoringOptions();
+    $this->assertEquals(13, sizeof($before));
+    $this->assertEquals(12, sizeof($after));
+    $this->assertEquals(['threeOfAKind'], array_values(array_diff($before, $after)));
+  }
+
+  public function testCurrentPlayerScoringOptions_shouldNotReturnFourOfAKind_whenTheyHaveBeenScored() {
+    $y = new YahtzeeGame(1);
+    $y->roll([]);
+    
+    $before = $y->currentPlayerScoringOptions();
+    $y->scoreCurrentDice('fourOfAKind');
+    $after = $y->currentPlayerScoringOptions();
+    $this->assertEquals(13, sizeof($before));
+    $this->assertEquals(12, sizeof($after));
+    $this->assertEquals(['fourOfAKind'], array_values(array_diff($before, $after)));
+  }
+
+  public function testCurrentPlayerScoringOptions_shouldNotReturnFullHouse_whenTheyHaveBeenScored() {
+    $y = new YahtzeeGame(1);
+    $y->roll([]);
+    
+    $before = $y->currentPlayerScoringOptions();
+    $y->scoreCurrentDice('fullHouse');
+    $after = $y->currentPlayerScoringOptions();
+    $this->assertEquals(13, sizeof($before));
+    $this->assertEquals(12, sizeof($after));
+    $this->assertEquals(['fullHouse'], array_values(array_diff($before, $after)));
+  }
+
+  public function testCurrentPlayerScoringOptions_shouldNotReturnSmallStraight_whenTheyHaveBeenScored() {
+    $y = new YahtzeeGame(1);
+    $y->roll([]);
+    
+    $before = $y->currentPlayerScoringOptions();
+    $y->scoreCurrentDice('smallStraight');
+    $after = $y->currentPlayerScoringOptions();
+    $this->assertEquals(13, sizeof($before));
+    $this->assertEquals(12, sizeof($after));
+    $this->assertEquals(['smallStraight'], array_values(array_diff($before, $after)));
+  }
+
+  public function testCurrentPlayerScoringOptions_shouldNotReturnLargeStraight_whenTheyHaveBeenScored() {
+    $y = new YahtzeeGame(1);
+    $y->roll([]);
+    
+    $before = $y->currentPlayerScoringOptions();
+    $y->scoreCurrentDice('largeStraight');
+    $after = $y->currentPlayerScoringOptions();
+    $this->assertEquals(13, sizeof($before));
+    $this->assertEquals(12, sizeof($after));
+    $this->assertEquals(['largeStraight'], array_values(array_diff($before, $after)));
+  }
+
+  public function testCurrentPlayerScoringOptions_shouldNotReturnYahtzee_whenTheyHaveBeenScored() {
+    $y = new YahtzeeGame(1);
+    $y->roll([]);
+    
+    $before = $y->currentPlayerScoringOptions();
+    $y->scoreCurrentDice('yahtzee');
+    $after = $y->currentPlayerScoringOptions();
+    $this->assertEquals(13, sizeof($before));
+    $this->assertEquals(12, sizeof($after));
+    $this->assertEquals(['yahtzee'], array_values(array_diff($before, $after)));
+  }
+
+  public function testCurrentPlayerScoringOptions_shouldNotReturnChance_whenTheyHaveBeenScored() {
+    $y = new YahtzeeGame(1);
+    $y->roll([]);
+    
+    $before = $y->currentPlayerScoringOptions();
+    $y->scoreCurrentDice('chance');
+    $after = $y->currentPlayerScoringOptions();
+    $this->assertEquals(13, sizeof($before));
+    $this->assertEquals(12, sizeof($after));
+    $this->assertEquals(['chance'], array_values(array_diff($before, $after)));
+  }
+
+  public function testScoreCurrentDice_cannotScoreTwiceInOneTurn() {
+    $y = new YahtzeeGame(1);
+    $y->roll([]);
+    
+    $y->scoreCurrentDice('chance');
+    $this->assertException(new Exception("Cannot score twice in one turn."), function() use ($y) {
+      $y->scoreCurrentDice('ones');
+    });
+  }
+
+  public function testScoreCurrentDice_aPlayerCannotScoreTheSameFieldTwice() {
+    $y = new YahtzeeGame(1);
+
+    $y->roll([]);
+    $y->scoreCurrentDice('chance');
+    $y->endTurn();
+    
+    $this->assertException(new Exception("Cannot score in the chance field - it is already scored."), function() use ($y) {
+      $y->roll([]);
+      $y->scoreCurrentDice('chance');
+    });
+  }
+
+  public function testScoreCurrentDice_cannotRollAfterScoring() {
+    $y = new YahtzeeGame(1);
+    $y->roll([]);
+    
+    $y->scoreCurrentDice('chance');
+    $this->assertException(new Exception("Cannot roll after scoring."), function() use ($y) {
+      $y->roll([]);
+    });
+  }
 
   private function assertValidRoll($roll) {
     $this->assertGreaterThanOrEqual(1, $roll);

@@ -39,6 +39,34 @@ class YahtzeeScoreSheet {
     $this->yahtzeeBonusCount = 0;
   }
   
+  public function __toString() {
+    return "" .
+      "Upper Board\n" .
+      "    Ones: \t\t " . $this->ones->getOrElse("__") . "\n" .
+      "    Twos: \t\t " . $this->twos->getOrElse("__") . "\n" .
+      "    Threes: \t\t " . $this->threes->getOrElse("__") . "\n" .
+      "    Fours: \t\t " . $this->fours->getOrElse("__") . "\n" .
+      "    Fives: \t\t " . $this->fives->getOrElse("__") . "\n" .
+      "    Sixes: \t\t " . $this->sixes->getOrElse("__") . "\n" .
+      "  Subtotal: \t " . $this->upperScore() . "\n" .
+      "  Bonus: \t " . $this->bonus() . "\n" .
+      "Lower Board\n" .
+      "    3 of a Kind: \t " . $this->threeOfAKind->getOrElse("__") . "\n" .
+      "    4 of a Kind: \t " . $this->fourOfAKind->getOrElse("__") . "\n" .
+      "    Full House: \t " . $this->fullHouse->getOrElse("__") . "\n" .
+      "    Small Straight: \t " . $this->smallStraight->getOrElse("__") . "\n" .
+      "    Large Straight: \t " . $this->largeStraight->getOrElse("__") . "\n" .
+      "    Yahtzee: \t\t " . $this->yahtzee->getOrElse("__") . "\n" .
+      "    Chance: \t\t " . $this->chance->getOrElse("__") . "\n" .
+      "  Subtotal: \t " . $this->lowerScore() . "\n" .
+      "  Bonus: \t " . $this->yahtzeeBonus() . "\n" .
+      "Total: \t " . $this->totalScore();
+  }
+  
+  public function isScored($field) {
+    return $this->$field instanceof Some;
+  }
+  
   public function totalScore() {
     return $this->upperScore() + $this->bonus() + $this->lowerScore() + $this->yahtzeeBonus();
   }

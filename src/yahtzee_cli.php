@@ -3,38 +3,48 @@ require('ioHelpers.php');
 require('autoload.php');
 use crias\yahtzee\YahtzeeGame;
 
-outPrintLn("Welcome to a sample Yahtzee game.");
-outPrintLn("");
-outPrintLn("This is a command line game.");
-outPrintLn("It will present choices and ask you to enter the number of your choice.");
-outPrintLn("Please make sure the appropriate player makes the selection.");
-outPrintLn("");
+outPrintln("Welcome to a sample Yahtzee game.");
+outPrintln("");
+outPrintln("This is a command line game.");
+outPrintln("It will present choices and ask you to enter the number of your choice.");
+outPrintln("Please make sure the appropriate player makes the selection.");
+outPrintln("");
 
-outPrintLn("Select how many players will play. (Between 1 and 6)");
+outPrintln("Select how many players will play. (Between 1 and 6)");
 $game = new YahtzeeGame(readChoice(1, 6));
 
-outPrintLn(bold("\nWelcome to the game. There are " . $game->numberOfPlayers() . " players."));
-nextTurn($game);
+outPrintln(bold("\nWelcome to the game. There are " . $game->numberOfPlayers() . " players."));
+
+
+while(sizeof($game->currentPlayerScoringOptions()) > 0) {
+  nextTurn($game);
+}
+
+outPrintln(bold("Game Over"));
+outPrintln("Scores:");
+outPrintln((string) $game);
 
 /** Functions **/
 
 function nextTurn($game) {
   $held = [1 => false, 2 => false, 3 => false, 4 => false, 5 => false];
   
-  outPrintLn("");
+  outPrintln("");
   outPrintln(bold("Ok player " . $game->currentPlayer() . ", it's your turn."));
+  outPrintln($game->playerScoreSheet($game->currentPlayer()));
 
   outPrintln("");
   outPrint("Press enter for your first roll...");
   readLine();
   
   do {
-    outPrintLn("");
-    outPrintLn("Rolling.");
+    outPrintln("");
+    outPrintln("Rolling.");
     $rollOrScore = roll($game, $held);
   } while($rollOrScore == 'roll');
   
-  //score($game);
+  score($game);
+  $game->endTurn();
 
   return;
 }
@@ -42,22 +52,39 @@ function nextTurn($game) {
 function roll(YahtzeeGame $game, array &$held) {
   $toHold = array_keys($held, true);
   $dice = $game->roll($toHold);
-  outPrintLn("Here's your roll: " . implode(" ", $dice));
   if($game->rollsRemaining() > 0) {
-    return chooseHeldRollOrScore($held, $dice);
+    return chooseHeldRollOrScore($game, $held, $dice);
   } else {
     return 'score';
   }
 }
 
-function chooseHeldRollOrScore(array &$held, array $dice) {
-  outPrintLn("");
+function score(YahtzeeGame $game) {
+  $scoringOptions = $game->currentPlayerScoringOptions();
+  outPrintln("");
+  outPrintln("Here's your roll: " . implode(" ", $game->currentDice()));
+  array_push($scoringOptions, "CheckScore");
+  $choice = presentChoices("Select a field to score", $scoringOptions);
+  
+  if($choice == sizeof($scoringOptions)) {
+    outPrintln("\n" . $game->playerScoreSheet($game->currentPlayer()));
+    return score($game);    
+  } else {
+    $game->scoreCurrentDice($scoringOptions[$choice - 1]);
+    return;
+  }
+}
+
+function chooseHeldRollOrScore(YahtzeeGame $game, array &$held, array $dice) {
+  outPrintln("");
+  outPrintln("Here's your roll: " . implode(" ", $dice));
   $choice = presentChoices("What would you like to do?", [
       toggleHeldText(1, $held[1], $dice[1]),
       toggleHeldText(2, $held[2], $dice[2]),
       toggleHeldText(3, $held[3], $dice[3]),
       toggleHeldText(4, $held[4], $dice[4]),
       toggleHeldText(5, $held[5], $dice[5]),
+      "Check Score",
       "Score",
       "Roll"
     ]);
@@ -73,11 +100,13 @@ function chooseHeldRollOrScore(array &$held, array $dice) {
   } else if($choice == 5) {
     $held[5] = !$held[5];
   } else if($choice == 6) {
-    return "score";    
+    outPrintln("\n" . $game->playerScoreSheet($game->currentPlayer()));
   } else if($choice == 7) {
+    return "score";    
+  } else if($choice == 8) {
     return "roll";
   }
-  return chooseHeldRollOrScore($held, $dice);
+  return chooseHeldRollOrScore($game, $held, $dice);
 }
 
 function toggleHeldText($position, $bool, $value) {

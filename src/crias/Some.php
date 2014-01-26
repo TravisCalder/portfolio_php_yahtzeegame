@@ -17,6 +17,10 @@ class Some extends Option {
     return new Some($fn($this->value));
   }
   
+  public function get() {
+    return $this->value;
+  }
+  
   public function getOrElse($default) {
     return $this->value;
   }
