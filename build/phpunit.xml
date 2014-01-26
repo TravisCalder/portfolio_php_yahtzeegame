@@ -27,6 +27,7 @@
         <file>../src/autoload.php</file>
         <file>../src/yahtzee_cli.php</file>
         <file>../src/ioHelpers.php</file>
+        <file>../src/crias/testing/ExceptionTesting.php</file>
       </exclude>
     </whitelist>
   </filter>

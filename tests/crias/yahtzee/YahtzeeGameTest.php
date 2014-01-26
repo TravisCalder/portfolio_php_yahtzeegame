@@ -13,7 +13,6 @@ class YahtzeeGameTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(1, $y->numberOfPlayers());
     $this->assertEquals(1, $y->currentPlayer());
     $this->assertEquals(3, $y->rollsRemaining());
-    $this->assertEquals([1 => 0], $y->playerScores());
   }
   
   public function testRoll_rollingMultipleTimesResultsInDifferentValues() {
@@ -431,6 +430,53 @@ class YahtzeeGameTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(1, $y->currentPlayer());
     $this->assertEquals(3, $y->rollsRemaining());
     $this->assertEquals([], $y->currentDice());
+  }
+
+  /* __toString */
+  
+  public function testToString_shouldContainAtLeastAllPlayerScores() {
+    $chanceScores = [];
+    $y = new YahtzeeGame(6);
+
+    for($i = 1; $i <= 6; $i++) {
+      $chanceScores[$i] = array_sum($y->roll([]));
+      $y->scoreCurrentDice('chance');
+      $y->endTurn();
+    }
+
+    for($i = 1; $i <= 6; $i++) {
+      $this->assertContains((string) $chanceScores[$i], (string) $y);
+    }
+  }
+
+  public function testPlayerScoreSheet_shouldContainPlayerScore() {
+    $chanceScores = [];
+    $y = new YahtzeeGame(6);
+    
+    for($i = 1; $i <= 6; $i++) {
+      $chanceScores[$i] = array_sum($y->roll([]));
+      $y->scoreCurrentDice('chance');
+      $y->endTurn();
+    }
+
+    for($i = 1; $i <= 6; $i++) {
+      $this->assertContains((string) $chanceScores[$i], (string) $y->playerScoreSheet($i));
+    }
+  }
+
+  public function testToString_shouldContainAtLeastAllPlayerScoreSheets() {
+    $chanceScores = [];
+    $y = new YahtzeeGame(6);
+    
+    for($i = 1; $i <= 6; $i++) {
+      $chanceScores[$i] = array_sum($y->roll([]));
+      $y->scoreCurrentDice('chance');
+      $y->endTurn();
+    }
+
+    for($i = 1; $i <= 6; $i++) {
+      $this->assertContains((string) $y->playerScoreSheet($i), (string) $y);
+    }
   }
 
   private function assertValidRoll($roll) {

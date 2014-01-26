@@ -866,7 +866,7 @@ class YahtzeeScoreSheetTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(0, $y->totalScore());
   }
 
-  public function testBonusYahtzee_canBePlayedInFullHouseColumn_andScoreFullHouse_whenAppropriateUpperFieldIsFilled() {
+  public function testBonusYahtzee_canBePlayedInFullHouseColumn_andScoreFullHouse_whenAppropriateUpperFieldisScored() {
     $y = new YahtzeeScoreSheet();
     
     $y->scoreSixes(dice(1), dice(2), dice(3), dice(4), dice(5));
@@ -879,7 +879,7 @@ class YahtzeeScoreSheetTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(175, $y->totalScore());
   }
 
-  public function testBonusYahtzee_canBePlayedInFullHouseColumn_withoutBonus_andScoreFullHouse_whenYahtzeeWasCrossedOut_whenAppropriateUpperFieldIsFilled() {
+  public function testBonusYahtzee_canBePlayedInFullHouseColumn_withoutBonus_andScoreFullHouse_whenYahtzeeWasCrossedOut_whenAppropriateUpperFieldisScored() {
     $y = new YahtzeeScoreSheet();
     
     $y->scoreFives(dice(1), dice(2), dice(3), dice(4), dice(6));
@@ -916,7 +916,7 @@ class YahtzeeScoreSheetTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(0, $y->totalScore());
   }
 
-  public function testBonusYahtzee_canBePlayedInSmallStraightColumn_andScoreSmallStraight_whenAppropriateUpperFieldIsFilled() {
+  public function testBonusYahtzee_canBePlayedInSmallStraightColumn_andScoreSmallStraight_whenAppropriateUpperFieldisScored() {
     $y = new YahtzeeScoreSheet();
     
     $y->scoreOnes(dice(6), dice(2), dice(3), dice(4), dice(5));
@@ -929,7 +929,7 @@ class YahtzeeScoreSheetTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(180, $y->totalScore());
   }
 
-  public function testBonusYahtzee_canBePlayedInSmallStraightColumn_withoutBonus_andScoreSmallStraight_whenYahtzeeWasCrossedOut_whenAppropriateUpperFieldIsFilled() {
+  public function testBonusYahtzee_canBePlayedInSmallStraightColumn_withoutBonus_andScoreSmallStraight_whenYahtzeeWasCrossedOut_whenAppropriateUpperFieldisScored() {
     $y = new YahtzeeScoreSheet();
     
     $y->scoreTwos(dice(6), dice(1), dice(3), dice(4), dice(5));
@@ -966,7 +966,7 @@ class YahtzeeScoreSheetTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(0, $y->totalScore());
   }
 
-  public function testBonusYahtzee_canBePlayedInLargeStraightColumn_andScoreLargeStraight_whenAppropriateUpperFieldIsFilled() {
+  public function testBonusYahtzee_canBePlayedInLargeStraightColumn_andScoreLargeStraight_whenAppropriateUpperFieldisScored() {
     $y = new YahtzeeScoreSheet();
     
     $y->scoreThrees(dice(1), dice(2), dice(6), dice(4), dice(5));
@@ -979,7 +979,7 @@ class YahtzeeScoreSheetTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(190, $y->totalScore());
   }
 
-  public function testBonusYahtzee_canBePlayedInLargeStraightColumn_withoutBonus_andScoreLargeStraight_whenYahtzeeWasCrossedOut_whenAppropriateUpperFieldIsFilled() {
+  public function testBonusYahtzee_canBePlayedInLargeStraightColumn_withoutBonus_andScoreLargeStraight_whenYahtzeeWasCrossedOut_whenAppropriateUpperFieldisScored() {
     $y = new YahtzeeScoreSheet();
     
     $y->scoreFours(dice(1), dice(2), dice(6), dice(3), dice(5));
@@ -1070,95 +1070,116 @@ class YahtzeeScoreSheetTest extends PHPUnit_Framework_TestCase {
     $this->assertEquals(5, $y->totalScore());  
   }  
   
-  /* isFilled methods for easier UI */
+  /* isScored methods for easier UI */
   
-  public function isFilled_shouldReturnTrue_whenFieldIsFilled() {
+  public function isScored_shouldReturnTrue_whenFieldisScored() {
     $y = new YahtzeeScoreSheet();
     $this->assertNoneAreFilled($y);
     $y->scoreOnes(dice(1), dice(2), dice(3), dice(1), dice(1));
-    $this->assertOnlyOneIsFilled($y, 'ones');
+    $this->assertOnlyOneisScored($y, 'ones');
 
     $y = new YahtzeeScoreSheet();
     $this->assertNoneAreFilled($y);
     $y->scoreTwos(dice(1), dice(2), dice(3), dice(1), dice(1));
-    $this->assertOnlyOneIsFilled($y, 'twos');
+    $this->assertOnlyOneisScored($y, 'twos');
 
     $y = new YahtzeeScoreSheet();
     $this->assertNoneAreFilled($y);
     $y->scoreThrees(dice(1), dice(2), dice(3), dice(1), dice(1));
-    $this->assertOnlyOneIsFilled($y, 'threes');
+    $this->assertOnlyOneisScored($y, 'threes');
 
     $y = new YahtzeeScoreSheet();
     $this->assertNoneAreFilled($y);
     $y->scoreFours(dice(1), dice(2), dice(3), dice(1), dice(1));
-    $this->assertOnlyOneIsFilled($y, 'fours');
+    $this->assertOnlyOneisScored($y, 'fours');
 
     $y = new YahtzeeScoreSheet();
     $this->assertNoneAreFilled($y);
     $y->scoreFive(dice(1), dice(2), dice(3), dice(1), dice(1));
-    $this->assertOnlyOneIsFilled($y, 'fives');
+    $this->assertOnlyOneisScored($y, 'fives');
 
     $y = new YahtzeeScoreSheet();
     $this->assertNoneAreFilled($y);
     $y->scoreSixes(dice(1), dice(2), dice(3), dice(1), dice(1));
-    $this->assertOnlyOneIsFilled($y, 'sixes');
+    $this->assertOnlyOneisScored($y, 'sixes');
 
     $y = new YahtzeeScoreSheet();
     $this->assertNoneAreFilled($y);
     $y->scoreThreeOfAKind(dice(1), dice(2), dice(3), dice(1), dice(1));
-    $this->assertOnlyOneIsFilled($y, 'threeOfAKind');
+    $this->assertOnlyOneisScored($y, 'threeOfAKind');
 
     $y = new YahtzeeScoreSheet();
     $this->assertNoneAreFilled($y);
     $y->scoreFourOfAKind(dice(1), dice(2), dice(3), dice(1), dice(1));
-    $this->assertOnlyOneIsFilled($y, 'fourOfAKind');
+    $this->assertOnlyOneisScored($y, 'fourOfAKind');
 
     $y = new YahtzeeScoreSheet();
     $this->assertNoneAreFilled($y);
     $y->scoreFullHous(dice(1), dice(2), dice(3), dice(1), dice(1));
-    $this->assertOnlyOneIsFilled($y, 'fullHouse');
+    $this->assertOnlyOneisScored($y, 'fullHouse');
 
     $y = new YahtzeeScoreSheet();
     $this->assertNoneAreFilled($y);
     $y->scoreSmallStraight(dice(1), dice(2), dice(3), dice(1), dice(1));
-    $this->assertOnlyOneIsFilled($y, 'smallStraight');
+    $this->assertOnlyOneisScored($y, 'smallStraight');
 
     $y = new YahtzeeScoreSheet();
     $this->assertNoneAreFilled($y);
     $y->scoreLargeStraight(dice(1), dice(2), dice(3), dice(1), dice(1));
-    $this->assertOnlyOneIsFilled($y, 'largeStraight');
+    $this->assertOnlyOneisScored($y, 'largeStraight');
 
     $y = new YahtzeeScoreSheet();
     $this->assertNoneAreFilled($y);
     $y->scoreChance(dice(1), dice(2), dice(3), dice(1), dice(1));
-    $this->assertOnlyOneIsFilled($y, 'chance');
+    $this->assertOnlyOneisScored($y, 'chance');
 
     $y = new YahtzeeScoreSheet();
     $this->assertNoneAreFilled($y);
     $y->scoreYahtzee(dice(1), dice(2), dice(3), dice(1), dice(1));
-    $this->assertOnlyOneIsFilled($y, 'yahtzee');
+    $this->assertOnlyOneisScored($y, 'yahtzee');
   }
+
+  /* __toString */
   
+  public function testToString_shouldContainAtLeastMajorScoreElements() {
+    $y = new YahtzeeScoreSheet();
+    
+    $y->scoreOnes(dice(1), dice(1), dice(1), dice(1), dice(2));  
+    $y->scoreFours(dice(4), dice(4), dice(4), dice(4), dice(2));  
+    $y->scoreFives(dice(5), dice(5), dice(5), dice(5), dice(2));  
+    $y->scoreSixes(dice(6), dice(6), dice(6), dice(6), dice(2));  
+
+    $y->scoreYahtzee(dice(6), dice(6), dice(6), dice(6), dice(6));  
+    $y->scoreFourOfAKind(dice(6), dice(6), dice(6), dice(6), dice(6));  
+
+    $string = (string) $y;
+    $this->assertContains((string) $y->upperScore(),    $string);
+    $this->assertContains((string) $y->bonus(),         $string);
+    $this->assertContains((string) $y->lowerScore(),    $string);
+    $this->assertContains((string) $y->yahtzeeBonus(),  $string);
+    $this->assertContains((string) $y->totalScore(),    $string);
+  }
+
   /* Helpers */
   private $upperFields = ['ones', 'twos', 'threes', 'fours', 'fives', 'sixes'];
   private $lowerFields = ['threeOfAKind', 'fourOfAKind', 'fullHouse', 'smallStraight', 'largeStraight', 'yahtzee', 'chance'];
 
   private function assertNoneAreFilled(YahtzeeScoreBoard $y) {
     foreach($upperFields as $field) {
-      $this->assertEquals(false, $y->isFilled($field));
+      $this->assertEquals(false, $y->isScored($field));
     }
     foreach($lowerFields as $field) {
-      $this->assertEquals(false, $y->isFilled($field));
+      $this->assertEquals(false, $y->isScored($field));
     }
   }
   
-  private function assertOnlyOneIsFilled(YahtzeeScoreBoard $y, $filledField) {
-    $this->assertEquals(true, $y->isFilled($filledField));
+  private function assertOnlyOneisScored(YahtzeeScoreBoard $y, $filledField) {
+    $this->assertEquals(true, $y->isScored($filledField));
     foreach($upperFields as $field) {
-      if($field != $filledField) $this->assertEquals(false, $y->isFilled($field));
+      if($field != $filledField) $this->assertEquals(false, $y->isScored($field));
     }
     foreach($lowerFields as $field) {
-      if($field != $filledField) $this->assertEquals(false, $y->isFilled($field));
+      if($field != $filledField) $this->assertEquals(false, $y->isScored($field));
     }
   }
 

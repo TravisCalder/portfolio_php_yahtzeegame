@@ -63,10 +63,6 @@ class YahtzeeScoreSheet {
       "Total: \t " . $this->totalScore();
   }
   
-  public function isScored($field) {
-    return $this->$field instanceof Some;
-  }
-  
   public function totalScore() {
     return $this->upperScore() + $this->bonus() + $this->lowerScore() + $this->yahtzeeBonus();
   }
@@ -98,10 +94,10 @@ class YahtzeeScoreSheet {
     return ($this->upperScore() >= 63) ? 35 : 0;
   }
 
-  public function isFilled($filledField) {
-    return $this->$filledField->isDefined();
+  public function isScored($field) {
+    return $this->$field instanceof Some;
   }
-
+  
   public function scoreOnes(Dice $first, Dice $second, Dice $third, Dice $fourth, Dice $fifth) {
     $dice = [$first, $second, $third, $fourth, $fifth];
     $this->scoreField('ones', $this->sumValuesEqualTo(1, $dice));

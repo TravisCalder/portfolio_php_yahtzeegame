@@ -53,14 +53,6 @@ class YahtzeeGame {
     return $this->_rollsRemaining;
   }
 
-  public function playerScores() {
-    $scores = [];
-    for($i = 1; $i <= $this->_numberOfPlayers; $i++) {
-      $scores[$i] = $this->_scoreSheets[$i]->totalScore();
-    }
-    return $scores;
-  }
-
   public function currentDice() {
     return $this->_currentDice;
   }
