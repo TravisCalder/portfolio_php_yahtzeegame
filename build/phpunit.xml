@@ -25,6 +25,8 @@
       <directory suffix=".php">../src</directory>
       <exclude>
         <file>../src/autoload.php</file>
+        <file>../src/yahtzee_cli.php</file>
+        <file>../src/ioHelpers.php</file>
       </exclude>
     </whitelist>
   </filter>
